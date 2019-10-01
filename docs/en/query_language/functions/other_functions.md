@@ -107,8 +107,8 @@ You can use this function in table engine parameters in a CREATE TABLE query whe
 
 Returns the login of current user. Login of user, that initiated query, will be returned in case distibuted query.
 
-```
-currentUser(   )
+```sql
+SELECT currentUser(   )
 ```
 
 Alias: user(), USER()
@@ -124,8 +124,8 @@ Type: `String`.
 
 Query:
 
-```
-select currentUser()
+```sql
+SELECT currentUser()
 ```
 
 Result:
