@@ -2,12 +2,83 @@
 
 The search is case-sensitive by default in all these functions. There are separate variants for case insensitive search.
 
-## position(haystack, needle), locate(haystack, needle)
+## position(haystack, needle) {#position}
 
 Search for the substring `needle` in the string `haystack`.
 Returns the position (in bytes) of the found substring, starting from 1, or returns 0 if the substring was not found.
+Works under the assumption that the string contains a set of bytes representing a single-byte encoded text. If this assumption is not met, it returns some result.
 
 For a case-insensitive search, use the function `positionCaseInsensitive`.
+
+```sql
+SELECT position(haystack, needle) 
+```
+
+Alias: locate(haystack, needle).
+
+**Parameters** (If exist)
+
+- `needle` —  substring, which is to be searched.
+- `haystack` — string, from which substring is to be searched.
+
+**Returned value(s)**
+
+- 0, if the substring was not found.
+- 1, if substring was found. 
+
+Type: `Integer`.
+
+**Example**
+
+Query:
+
+```sql
+SELECT position('This is a String', 'This')
+```
+
+Result:
+
+```text
+┌─position('This is a String', 'This')─┐
+│                                    1 │
+└──────────────────────────────────────┘
+```
+
+## positionCaseInsensitive (haystack, needle) {#positionCaseInsensitive}
+Search for the substring `needle` in the string `haystack`. Use the function for a case-insensitive search. 
+Returns the position (in bytes) of the found substring, starting from 1, or returns 0 if the substring was not found. 
+Works under the assumption that the string contains a set of bytes representing a single-byte encoded text. If this assumption is not met, it returns some result.
+```sql
+SELECT positionCaseInsensitive (haystack, needle)
+```
+
+**Parameters** (If exist)
+
+- `needle` —  substring, which is to be searched.
+- `haystack` — string, from which substring is to be searched.
+
+**Returned value(s)**
+
+- 0, if the substring was not found.
+- 1, if substring was found. 
+
+Type: `Integer`.
+
+**Example**
+
+Query:
+
+```sql
+SELECT positionCaseInsensitive('This is a String', 'this')
+```
+
+Result:
+
+```text
+┌─positionCaseInsensitive('This is a String', 'this')─┐
+│                                                   1 │
+└─────────────────────────────────────────────────────┘
+```
 
 ## positionUTF8(haystack, needle)
 
