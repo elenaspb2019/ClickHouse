@@ -702,10 +702,10 @@ SELECT replicate(1, ['a', 'b', 'c'])
 
 ## filesystemAvailable {#function-filesystemavailable}
 
-Returns the amount of remaining space in the filesystem where the files of the databases located. See the [path](../../operations/server_settings/settings.md#server_settings-path) server setting description.
+Returns amount of remaining space on the filesystem where the files of the databases located. It is always smaller than total free space because some space is reserved for a root user. See the [path](../../operations/server_settings/settings.md#server_settings-path) server setting description.
 
-```
-filesystemAvailable()
+```sql
+SELECT filesystemAvailable()
 ```
 
 **Returned values**
@@ -717,18 +717,61 @@ Type: [UInt64](../../data_types/int_uint.md).
 **Example**
 
 ```sql
-SELECT filesystemAvailable() AS "Free space", toTypeName(filesystemAvailable()) AS "Type"
+SELECT filesystemAvailable() AS "Available space", toTypeName(filesystemAvailable()) AS "Type"
+```
+```text
+┌─Available space─┬─Type───┐
+│     34966368256 │ UInt64 │
+└─────────────────┴────────┘
+```
+
+##  filesystemFree {#function-filesystemfree}
+
+Returns total amount of the free space on the filesystem where the files of the databases located. Consist of both space reserved for a root user and space that actual available for data.
+
+```sql
+SELECT filesystemFree()
+```
+
+**Returned values**
+
+- Amount of free space in bytes.
+
+Type: [UInt64](../../data_types/int_uint.md).
+
+**Example**
+
+```sql
+SELECT filesystemFree() AS "Free space", toTypeName(filesystemFree()) AS "Type"
 ```
 ```text
 ┌──Free space─┬─Type───┐
-│ 18152624128 │ UInt64 │
+│ 36732297216 │ UInt64 │
 └─────────────┴────────┘
 ```
 
-## filesystemCapacity
+## filesystemCapacity {#function-filesystemcapacity}
 
-Returns the capacity information of the disk, in bytes. This information is evaluated using the configured by path.
+Returns the capacity information of the filesystem in bytes. This information is evaluated using the configured by path.
 
+```sql
+SELECT filesystemcapacity()
+```
+
+**Returned values**
+
+- Capacity information of the filesystem in bytes.
+
+Type: [UInt64](../../data_types/int_uint.md).
+
+```sql
+SELECT filesystemCapacity() AS "Capacity", toTypeName(filesystemCapacity()) AS "Type"
+```
+```text
+┌────Capacity─┬─Type───┐
+│ 42223218688 │ UInt64 │
+└─────────────┴────────┘
+```
 ## finalizeAggregation {#function-finalizeaggregation}
 
 Takes state of aggregate function. Returns result of aggregation (finalized state).
