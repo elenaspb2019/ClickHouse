@@ -742,14 +742,13 @@ SELECT filesystemAvailable() AS "Free space", toTypeName(filesystemAvailable()) 
 
 Принимает на вход состояния агрегатной функции и возвращает столбец со значениями, которые представляют собой результат мёржа этих состояний для выборки строк из блока от первой до текущей строки. Например, принимает состояние агрегатной функции (например,  `runningAccumulate(uniqState(UserID))`), и для каждой строки блока возвращает результат агрегатной функции после мёржа состояний функции для всех предыдущих строк и текущей. Таким образом, результат зависит от разбиения данных по блокам и от порядка данных в блоке.
 
-## joinGet('join_storage_table_name', 'value_column', join_keys) {#other_functions-joinget}
+## joinGet {#function-joinget}
 
-Функция позволяет извлекать данные из таблицы таким же образом как из [словаря](#https://clickhouse.yandex/docs/ru/query_language/dicts/).
+Функция позволяет извлекать данные из таблицы таким же образом как из [словаря](https://clickhouse.yandex/docs/ru/query_language/dicts/).
 
-Получает данные из таблиц [Join](#https://clickhouse.yandex/docs/ru/operations/table_engines/join/) по ключу.
+Получает данные из таблиц [Join](https://clickhouse.yandex/docs/ru/operations/table_engines/join/) по ключу.
 
 Поддержаны только таблицы, созданные запросом с `ENGINE = Join(ANY, LEFT, <join_keys>)`. 
-
 
 **Синтаксис** 
 
@@ -765,21 +764,20 @@ joinGet(`join_storage_table_name`, `value_column`, join_keys)
 
 - `join_keys` — список ключей, по которым производится выборка данных.
 
-
 **Возвращаемое значение**
 
 Возвращает значение по списку ключей.
 
-Если значения не существует в исходной таблице, вернется `0` или `null` в соответствии с настройками [join_use_nulls](#https://clickhouse.yandex/docs/ru/operations/settings/settings/#settings-join_use_nulls). 
+Если значения не существует в исходной таблице, вернется `0` или `null` в соответствии с настройками [join_use_nulls](https://clickhouse.yandex/docs/ru/operations/settings/settings/#settings-join_use_nulls). 
 
-Тип: [все Типы Данных](#https://clickhouse.yandex/docs/ru/data_types/).
+Тип: [все Типы Данных](https://clickhouse.yandex/docs/ru/data_types/).
 
 
 **Пример**
 
 Входная таблица:
 
-```text
+```sql
 CREATE TABLE id_val(`id` UInt32, `val` UInt32) ENGINE = Join(ANY, LEFT, id)
 
 INSERT INTO id_val VALUES (1,11)(2,12)(4,13)

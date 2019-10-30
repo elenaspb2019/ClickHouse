@@ -762,11 +762,11 @@ Takes the states of the aggregate function and returns a column with values, are
 For example, takes state of aggregate function (example runningAccumulate(uniqState(UserID))), and for each row of block, return result of aggregate function on merge of states of all previous rows and current row.
 So, result of function depends on partition of data to blocks and on order of data in block.
 
-## joinGet('join_storage_table_name', 'value_column', join_keys) {#other_functions-joinget}
+## joinGet {#function-joinget}
 
-The function lets you extract data from the table the same way as from a [dictionary](#https://clickhouse.yandex/docs/en/query_language/dicts/).
+The function lets you extract data from the table the same way as from a [dictionary](https://clickhouse.yandex/docs/en/query_language/dicts/).
 
-Gets data from [Join](#https://clickhouse.yandex/docs/en/operations/table_engines/join/) tables using the specified join key.
+Gets data from [Join](https://clickhouse.yandex/docs/en/operations/table_engines/join/) tables using the specified join key.
 
 Only supports tables created with the `ENGINE = Join(ANY, LEFT, <join_keys>)` statement.
 
@@ -788,14 +788,14 @@ joinGet(`join_storage_table_name`, `value_column`, join_keys)
 
 Returns list of values corresponded to list of keys.
 
-If certain doesn't exist in source table then `0` or `null` will be returned based on [join_use_nulls](#https://clickhouse.yandex/docs/en/operations/settings/settings/#settings-join_use_nulls) setting. 
+If certain doesn't exist in source table then `0` or `null` will be returned based on [join_use_nulls](https://clickhouse.yandex/docs/en/operations/settings/settings/#settings-join_use_nulls) setting. 
 
-Type: [all Data Types](#https://clickhouse.yandex/docs/en/data_types/).
+Type: [all Data Types](https://clickhouse.yandex/docs/en/data_types/).
 
 **Example**
 
 Input table:
-```text
+```sql
 CREATE TABLE id_val(`id` UInt32, `val` UInt32) ENGINE = Join(ANY, LEFT, id)
 INSERT INTO id_val VALUES (1,11)(2,12)(4,13)
 ```
