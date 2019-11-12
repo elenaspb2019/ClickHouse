@@ -1,11 +1,56 @@
 # Conditional functions
 
-## if(cond, then, else), cond ? operator then : else
+## if {#if}
 
-Returns `then` if `cond != 0`, or `else` if `cond = 0`.
-`cond` must be of type `UInt8`, and `then` and `else` must have the lowest common type.
+`if` - is a [ternary operation](https://en.wikipedia.org/wiki/Ternary_operation). 
+Evaluates condition `cond` and executes `then` expression if condition is met. Executes `else` otherwise.
 
-`then` and `else` can be `NULL`
+**Syntax** 
+
+```sql
+SELECT if(cond, then, else)
+```
+
+**Parameters** (Optional)
+
+- `cond` – The condition for evaluation. [UInt8](https://clickhouse.yandex/docs/ru/data_types/int_uint/).
+- `then` - The expression executed if condition is met. Any [data type](https://clickhouse.yandex/docs/en/data_types/).
+- `else` - The expression executed if condition is not met. Any [data type](https://clickhouse.yandex/docs/en/data_types/).
+
+**Returned values**
+
+The function executes `then` or `else` expression and returns its result, depending on the condition `cond`.
+Expressions `then` and `else` can be `NULL`, any expressions or have an explicit values.
+Returns any [data type](https://clickhouse.yandex/docs/en/data_types/).
+
+**Example**
+
+Query:
+
+```sql
+SELECT IF(CAST('a', 'Enum8(\'a\' = 1, \'b\' = 2)') > 0, plus(2, 2), null)
+```
+
+Result:
+
+```text
+┌─IF(greater(CAST('a', 'Enum8(\'a\' = 1, \'b\' = 2)'), 0), plus(2, 2), NULL)─┐
+│                                                                          4 │
+└────────────────────────────────────────────────────────────────────────────┘
+```
+
+Query:
+
+```sql
+SELECT IF(CAST('a', 'Enum8(\'a\' = 1, \'b\' = 2)') > 1, plus(2, 2), null)
+```
+Result:
+
+```text
+┌─IF(greater(CAST('a', 'Enum8(\'a\' = 1, \'b\' = 2)'), 1), plus(2, 2), NULL)─┐
+│                                                                       ᴺᵁᴸᴸ │
+└────────────────────────────────────────────────────────────────────────────┘
+```
 
 ## multiIf
 
