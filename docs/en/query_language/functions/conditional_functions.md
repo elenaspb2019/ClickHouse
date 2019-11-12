@@ -11,7 +11,7 @@ Evaluates condition `cond` and executes `then` expression if condition is met. E
 SELECT if(cond, then, else)
 ```
 
-**Parameters** (Optional)
+**Parameters**
 
 - `cond` – The condition for evaluation. [UInt8](https://clickhouse.yandex/docs/ru/data_types/int_uint/).
 - `then` - The expression executed if condition is met. Any [data type](https://clickhouse.yandex/docs/en/data_types/).
