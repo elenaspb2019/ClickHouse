@@ -649,27 +649,53 @@ If you want to get a list of unique items in an array, you can use arrayReduce('
 
 A special function. See the section ["ArrayJoin function"](array_join.md#functions_arrayjoin).
 
-## arrayDifference(arr) {#array_functions-arraydifference}
+## arrayDifference {#arraydifference}
 
-Takes an array, returns an array of differences between adjacent elements. The first element will be 0, the second is the difference between the second and first elements of the original array, etc. The type of elements in the resulting array is determined by the type inference rules for subtraction (e.g. UInt8 - UInt8 = Int16). UInt*/Int*/Float* types are supported (type Decimal is not supported).
+Takes an array, returns an array of differences between adjacent elements. 
+The first element will be 0, the second is the difference between the second and first elements of the original array, etc.
+The type of elements in the resulting array is determined by the type inference rules for subtraction (e.g. UInt8 - UInt8 = Int16). 
 
-Example:
+
+**Syntax** 
+
+```sql
+SELECT arrayDifference(array)
+```
+
+**Parameters**
+
+- `array` – [Array](https://clickhouse.yandex/docs/en/data_types/array/). 
+
+
+**Returned values**
+
+Returns an array of differences between adjacent elements.
+
+Type: [UInt*](https://clickhouse.yandex/docs/en/data_types/int_uint/#uint-ranges), [Int*](https://clickhouse.yandex/docs/en/data_types/int_uint/#int-ranges), [Float*](https://clickhouse.yandex/docs/en/data_types/float/).
+
+**Example**
+
+Query:
 
 ```sql
 SELECT arrayDifference([1, 2, 3, 4])
 ```
+
+Result:
 
 ```text
 ┌─arrayDifference([1, 2, 3, 4])─┐
 │ [0,1,1,1]                     │
 └───────────────────────────────┘
 ```
-
 Example of the overflow due to result type Int64:
+
+Query:
 
 ```sql
 SELECT arrayDifference([0, 10000000000000000000])
 ```
+Result:
 
 ```text
 ┌─arrayDifference([0, 10000000000000000000])─┐
@@ -677,19 +703,58 @@ SELECT arrayDifference([0, 10000000000000000000])
 └────────────────────────────────────────────┘
 ```
 
-## arrayDistinct(arr) {#array_functions-arraydistinct}
+## arrayDistinct {#arraydistinct}
 
-Takes an array, returns an array containing the distinct elements. 
+Takes an array, returns an array containing unique elements only.
 
-Example:
+**Syntax** 
+
+```sql
+SELECT arrayDistinct(array)
+```
+
+**Parameters** 
+
+- `array` – [Array](https://clickhouse.yandex/docs/en/data_types/array/). 
+
+
+**Returned values**
+
+Returns an array containing unique elements.
+Type of elements depends on the largest value in the array.
+
+Type: [UInt*](https://clickhouse.yandex/docs/en/data_types/int_uint/#uint-ranges), [Int*](https://clickhouse.yandex/docs/en/data_types/int_uint/#int-ranges), [Float*](https://clickhouse.yandex/docs/en/data_types/float/).
+
+
+**Example**
+
+Query:
 
 ```sql
 SELECT arrayDistinct([1, 2, 2, 3, 1])
 ```
 
+Result:
+
 ```text
 ┌─arrayDistinct([1, 2, 2, 3, 1])─┐
 │ [1,2,3]                        │
+└────────────────────────────────┘
+```
+Example of rounding due to result type Float64:
+
+
+Query:
+
+```sql
+SELECT arrayDistinct([1, 2, 2, 100000000000000000005566765768890])
+```
+
+Result:
+
+```text
+┌─arrayDistinct([1, 2, 2, 1e32])─┐
+│ [1,2,1e32]                     │
 └────────────────────────────────┘
 ```
 
