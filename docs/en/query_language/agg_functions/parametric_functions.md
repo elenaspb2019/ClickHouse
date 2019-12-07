@@ -276,17 +276,131 @@ ORDER BY level
 
 Simply, the level value could only be 0, 1, 2, 3, it means the maxium event action stage that one user could reach.
 
-## retention(cond1, cond2, ...)
 
-Retention refers to the ability of a company or product to retain its customers over some specified periods.
+## retention(cond1, cond2, ...) {#retention}
 
-`cond1`, `cond2` ... is from one to 32 arguments of type UInt8 that indicate whether a certain condition was met for the event
+Analytical function shows how a product or service is able to keep customers over some specified periods.
+The function takes as arguments a set of expressions from 1 to 32 arguments of type `UInt8` that indicate whether a certain condition was met for the event.
+Any condition can be specified as an argument (as in [WHERE](https://clickhouse.yandex/docs/en/query_language/select/#select-where)).
+The conditions, except for the first, apply in pairs: the result of the second will be true if the first and second are true, of the third if the first and fird are true, etc.
 
-Example:
 
-Consider you are doing a website analytics, intend to calculate the retention of customers
+**Syntax** 
 
-This could be easily calculate by `retention`
+```sql
+retention(cond1, cond2, ..., cond32);
+```
+
+**Parameters**
+
+- `cond` — a calculated condition or expression.
+
+**Returned value**
+
+The function returns a set of arrays, where the number of arrays corresponds to the data set, and the length of each corresponds to the number of conditions passed to the function. 
+The value of each element is `0` or `1` depending on the result of the condition calculation.
+
+Type: `UInt8`.
+
+**Example**
+
+Consider you are doing a website analytics, intend to calculate the retention of customers. 
+Firstly, create a table to illustrate an example. 
+
+
+```sql
+CREATE TABLE retention_test(date Date, uid Int32)ENGINE = Memory;
+INSERT INTO retention_test SELECT '2018-08-06', number FROM numbers(5);
+INSERT INTO retention_test SELECT '2018-08-07', number FROM numbers(10);
+INSERT INTO retention_test SELECT '2018-08-08', number FROM numbers(15);
+```
+Input table:
+
+```text
+┌───────date─┬─uid─┐
+│ 2018-08-06 │   0 │
+│ 2018-08-06 │   1 │
+│ 2018-08-06 │   2 │
+│ 2018-08-06 │   3 │
+│ 2018-08-06 │   4 │
+└────────────┴─────┘
+┌───────date─┬─uid─┐
+│ 2018-08-07 │   0 │
+│ 2018-08-07 │   1 │
+│ 2018-08-07 │   2 │
+│ 2018-08-07 │   3 │
+│ 2018-08-07 │   4 │
+│ 2018-08-07 │   5 │
+│ 2018-08-07 │   6 │
+│ 2018-08-07 │   7 │
+│ 2018-08-07 │   8 │
+│ 2018-08-07 │   9 │
+└────────────┴─────┘
+┌───────date─┬─uid─┐
+│ 2018-08-08 │   0 │
+│ 2018-08-08 │   1 │
+│ 2018-08-08 │   2 │
+│ 2018-08-08 │   3 │
+│ 2018-08-08 │   4 │
+│ 2018-08-08 │   5 │
+│ 2018-08-08 │   6 │
+│ 2018-08-08 │   7 │
+│ 2018-08-08 │   8 │
+│ 2018-08-08 │   9 │
+│ 2018-08-08 │  10 │
+│ 2018-08-08 │  11 │
+│ 2018-08-08 │  12 │
+│ 2018-08-08 │  13 │
+│ 2018-08-08 │  14 │
+└────────────┴─────┘
+```
+
+Use `retention` function in the query and group users by unique ID `uid`.
+
+Query:
+
+```sql
+SELECT
+    uid,
+    retention(date = '2018-08-06', date = '2018-08-07', date = '2018-08-08') AS r
+FROM retention_test
+WHERE date IN ('2018-08-06', '2018-08-07', '2018-08-08')
+GROUP BY uid
+ORDER BY uid ASC
+```
+
+Result:
+
+```text
+┌─uid─┬─r───────┐
+│   0 │ [1,1,1] │
+│   1 │ [1,1,1] │
+│   2 │ [1,1,1] │
+│   3 │ [1,1,1] │
+│   4 │ [1,1,1] │
+│   5 │ [0,0,0] │
+│   6 │ [0,0,0] │
+│   7 │ [0,0,0] │
+│   8 │ [0,0,0] │
+│   9 │ [0,0,0] │
+│  10 │ [0,0,0] │
+│  11 │ [0,0,0] │
+│  12 │ [0,0,0] │
+│  13 │ [0,0,0] │
+│  14 │ [0,0,0] │
+└─────┴─────────┘
+```
+
+
+In this example:
+
+ `r1`- the number of unique visitors who met the `cond1` condition.
+ 
+ `r2`- the number of unique visitors who met `cond1` and `cond2` conditions.
+ 
+ `r3`- the number of unique visitors who met `cond1` and `cond3` conditions.
+
+Query:
 
 ```sql
 SELECT
@@ -297,14 +411,22 @@ FROM
 (
     SELECT
         uid,
-        retention(date = '2018-08-10', date = '2018-08-11', date = '2018-08-12') AS r
-    FROM events
-    WHERE date IN ('2018-08-10', '2018-08-11', '2018-08-12')
+        retention(date = '2018-08-06', date = '2018-08-07', date = '2018-08-08') AS r
+    FROM retention_test
+    WHERE date IN ('2018-08-06', '2018-08-07', '2018-08-08')
     GROUP BY uid
 )
 ```
 
-Simply, `r1` means the number of unique visitors who met the `cond1` condition, `r2` means the number of unique visitors who met `cond1` and `cond2` conditions, `r3` means the number of unique visitors who met `cond1` and `cond3` conditions.
+Total number of user visits per day.
+
+Result:
+
+```text
+┌─r1─┬─r2─┬─r3─┐
+│  5 │  5 │  5 │
+└────┴────┴────┘
+```
 
 
 ## uniqUpTo(N)(x)
