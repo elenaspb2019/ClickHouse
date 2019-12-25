@@ -219,13 +219,16 @@ SELECT sequenceCount('(?1).*(?2)')(time, number = 1, number = 2) FROM t
 - [sequenceMatch](#function-sequencematch)
 
 
-## windowFunnel {#windowfunnel}
+## windowFunnel(window, [mode])(timestamp, cond1, cond2, cond3, ...) {#windowfunnel}
 
 Searches for event chains in a sliding time window and calculates the maximum number of events that occurred from the chain.
 
 The function works according to the algorithm:
+
 - The function searches for data that triggers the first condition in the chain and sets the event counter to 1. This is the moment when the sliding window starts.
+
 - If events from the chain occur sequentially within the window, the counter is incremented. If the sequence of events is disrupted, the counter isn't incremented.
+
 - If the data has multiple event chains at varying points of completion, the function will only output the size of the longest chain.
 
 **Syntax** 
@@ -238,7 +241,7 @@ windowFunnel(window, [mode])(timestamp, cond1, cond2, cond3, ...)
 
 - `window` — Length of the sliding window in seconds.[UInt](../../data_types/int_uint/).
 - `mode` - It is an optional argument. 
-  * `'strict'` - When the `'strict'` is set, the windowFunnel() applies conditions only for the unique values.
+  - `'strict'` - When the `'strict'` is set, the windowFunnel() applies conditions only for the unique values.
 - `timestamp` — Name of the column containing the timestamp. Data types supported: [Date](../../data_types/date.md), [DateTime](../../data_types/datetime.md#data_type-datetime)  and other unsigned integer types (note that even though timestamp supports the `UInt64` type, it's value can't exceed the Int64 maximum, which is 2^63 - 1).
 - `cond` — Conditions or data describing the chain of events. [UInt8](#../data_types/int_uint/#diapazony-uint).
 
@@ -264,10 +267,10 @@ Input table:
 
 ```text
 ┌─event_date─┬─user_id─┬───────────timestamp─┬─eventID─┬─product─┐
-│ 2017-01-31 │       1 │ 2017-01-31 09:00:00 │    1007 │ phone   │
+│ 2017-01-28 │       1 │ 2017-01-29 10:00:00 │    1003 │ phone   │
 └────────────┴─────────┴─────────────────────┴─────────┴─────────┘
 ┌─event_date─┬─user_id─┬───────────timestamp─┬─eventID─┬─product─┐
-│ 2017-01-28 │       1 │ 2017-01-29 10:00:00 │    1003 │ phone   │
+│ 2017-01-31 │       1 │ 2017-01-31 09:00:00 │    1007 │ phone   │
 └────────────┴─────────┴─────────────────────┴─────────┴─────────┘
 ┌─event_date─┬─user_id─┬───────────timestamp─┬─eventID─┬─product─┐
 │ 2017-01-30 │       1 │ 2017-01-30 08:00:00 │    1009 │ phone   │
@@ -277,7 +280,7 @@ Input table:
 └────────────┴─────────┴─────────────────────┴─────────┴─────────┘
 ```
 
-Find out how far the user `user_id` could get through the chain in a period in January-February of 2017:
+Find out how far the user `user_id` could get through the chain in a period in January-February of 2017.
 
 Query:
 ```sql
