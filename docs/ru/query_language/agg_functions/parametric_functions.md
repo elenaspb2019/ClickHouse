@@ -257,7 +257,7 @@ windowFunnel(window)(timestamp, cond1, cond2, cond3, ...)
 3. Пользователь сделал заказ (`eventID = 1009`)
 4. Пользователь сделал повторный заказ (`eventID = 1010`).
 
-Водная таблица:
+Входная таблица:
 
 ```text
 ┌─event_date─┬─user_id─┬───────────timestamp─┬─eventID─┬─product─┐
