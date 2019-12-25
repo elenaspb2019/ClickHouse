@@ -258,7 +258,7 @@ Determine if a set period of time is enough for the user to select a phone and p
 
 Set the following chain of events:
 
-1. The user logged in to their account on the store (`eventID=1003`).
+1. The user logged in to their account on the store (`eventID = 1003`).
 2. The user searches for a phone (`eventID = 1007, product = 'phone'`).
 3. The user placed an order (`eventID = 1009`).
 4. The user made the order again (`eventID = 1010`).
