@@ -403,7 +403,7 @@ Ok.
 
 ## merge_tree_min_bytes_for_concurrent_read {#setting-merge_tree_min_bytes_for_concurrent_read}
 
-Если число байтов, которые должны быть прочитаны из одного файла таблицы с движком [MergeTree*](../table_engines/mergetree.md) превышает `merge_tree_min_bytes_for_concurrent_read`, то ClickHouse пытается выполнить конкурентное чтение в несколько потоков из этого файла.
+Если число байтов, которое должно быть прочитано из одного файла таблицы с движком [MergeTree*](../table_engines/mergetree.md), превышает значение `merge_tree_min_bytes_for_concurrent_read`, то ClickHouse выполняет одновременное чтение в несколько потоков из этого файла.
 
 Возможное значение:
 
