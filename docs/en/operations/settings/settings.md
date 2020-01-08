@@ -432,7 +432,6 @@ Possible value:
 
 Default value: 251658240.
 
-
 ## merge_tree_min_rows_for_seek {#setting-merge_tree_min_rows_for_seek}
 
 If the distance between two data blocks to be read in one file is less than `merge_tree_min_rows_for_seek` rows, then ClickHouse does not seek through the file, but reads the data sequentially.
