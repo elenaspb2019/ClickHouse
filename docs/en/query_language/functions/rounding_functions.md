@@ -84,7 +84,7 @@ round(3.65, 1) = 3.6
 
 ## roundBankers(x[, N]) {#roundbankers}
 
-Banker's rounding - a method of rounding fractional numbers, which differs from the usual arithmetic rounding in cases when the rounding number is a half between two numbers, it is rounded to the nearest even number. E.g. 3.5 rounds up to 4, 2.5 rounds down to 2.
+Banker's rounding is a method of rounding fractional numbers, which differs from the usual arithmetic rounding in cases when the rounding number is a half between two numbers, it is rounded to the nearest even number. E.g. 3.5 rounds up to 4, 2.5 rounds down to 2.
 
 Banker's rounding allows to sum rounded numbers without biasing a result.
 
