@@ -78,6 +78,92 @@ round(3.55, 1) = 3.6
 round(3.65, 1) = 3.6
 ```
 
+**See Also** 
+
+- [roundBankers](#roundbankers)
+
+## roundBankers(x[, N]) {#roundbankers}
+
+Banker's rounding - a method of rounding fractional numbers, which differs from the usual arithmetic rounding in cases when the rounding number is a half between two numbers, it is rounded to the nearest even number. E.g. 3.5 rounds up to 4, 2.5 rounds down to 2.
+
+Banker's rounding allows to sum rounded numbers without biasing a result.
+
+Examples of rounding 1.5, 2.5, 3.5 and 4.5:
+
+The sum of the original numbers: 1.5 + 2.5 + 3.5 + 4.5 = 12
+
+The sum of banker's rounded numbers: 2 + 2 + 4 + 4 = 12
+
+The sum of arithmetic rounded numbers: 2 + 3 + 4 + 5 = 14.
+
+
+**Syntax** 
+
+```sql
+roundBankers(expression [, decimal_places])
+```
+
+**Parameters** 
+
+- `expression` — A number to be rounded. Can be any [expression](../syntax.md#syntax-expressions) returning the numeric [data type](../../data_types/index.md#data_types). E.g.
+- `decimal-places` — An integer value.
+    - `decimal-places > 0` - The function will round the value to the given position right of the decimal point. E.g. roundBankers(3.55, 1).
+    - `decimal-places < 0` - The function will round the value to the given position left of the decimal point. E.g. roundBankers(33.55, -1) = 30.
+    - `decimal-places = 0` - The function will round the value to integer. In this case the argument can be omitted. E.g. roundBankers(2.5, 0) = 2.
+    
+**Returned value**
+
+The rounded number of the same type as the input number.
+
+
+Type: [all Data Types](../../data_types/index.md#data_types).
+
+
+### Examples
+
+**Example of use**
+
+Query:
+
+```sql
+ SELECT number / 2 AS x, roundBankers(x, 0) AS b fROM system.numbers limit 10
+```
+
+Result:
+
+```text
+┌───x─┬─b─┐
+│   0 │ 0 │
+│ 0.5 │ 0 │
+│   1 │ 1 │
+│ 1.5 │ 2 │
+│   2 │ 2 │
+│ 2.5 │ 2 │
+│   3 │ 3 │
+│ 3.5 │ 4 │
+│   4 │ 4 │
+│ 4.5 │ 4 │
+└─────┴───┘
+```
+
+**Examples of Banker's rounding**
+
+```text
+roundBankers(0.4) = 0
+roundBankers(-3.5) = -4
+roundBankers(4.5) = 4
+roundBankers(3.55, 1) = 3.6
+roundBankers(3.65, 1) = 3.6
+roundBankers(10.35, 1) = 10.4
+roundBankers(10.755, 2) = 11,76
+```
+
+**See Also** 
+
+- [round](#rounding_functions-round)
+
+
+
 ## roundToExp2(num)
 
 Accepts a number. If the number is less than one, it returns 0. Otherwise, it rounds the number down to the nearest (whole non-negative) degree of two.
