@@ -82,20 +82,19 @@ round(3.65, 1) = 3.6
 
 - [roundBankers](#roundbankers)
 
-## roundBankers(x[, N]) {#roundbankers}
+## roundBankers {#roundbankers}
 
-Banker's rounding is a method of rounding fractional numbers, which differs from the usual arithmetic rounding in cases when the rounding number is a half between two numbers, it is rounded to the nearest even number. E.g. 3.5 rounds up to 4, 2.5 rounds down to 2.
+Rounds a value using Banker's rounding.
 
-Banker's rounding allows to sum rounded numbers without biasing a result.
+Banker's rounding is a method of rounding fractional numbers. When the rounding number is a half between two numbers, it is rounded to the nearest even number. E.g. 3.5 rounds up to 4, 2.5 rounds down to 2.
 
-Examples of rounding 1.5, 2.5, 3.5 and 4.5:
+Using this method, you can reduce the effect of rounding numbers on the result of summing or subtracting these numbers.
 
-The sum of the original numbers: 1.5 + 2.5 + 3.5 + 4.5 = 12
+For example, sum numbers 1.5, 2.5, 3.5, 4.5 with different rounding:
 
-The sum of banker's rounded numbers: 2 + 2 + 4 + 4 = 12
-
-The sum of arithmetic rounded numbers: 2 + 3 + 4 + 5 = 14.
-
+- No rounding: 1.5 + 2.5 + 3.5 + 4.5 = 12
+- Banker's rounding:  2 + 2 + 4 + 4 = 12
+- Rounding to the nearest integer:  2 + 3 + 4 + 5 = 14.
 
 **Syntax** 
 
@@ -107,14 +106,22 @@ roundBankers(expression [, decimal_places])
 
 - `expression` — A number to be rounded. Can be any [expression](../syntax.md#syntax-expressions) returning the numeric [data type](../../data_types/index.md#data_types). E.g.
 - `decimal-places` — An integer value.
-    - `decimal-places > 0` - The function will round the value to the given position right of the decimal point. E.g. roundBankers(3.55, 1).
-    - `decimal-places < 0` - The function will round the value to the given position left of the decimal point. E.g. roundBankers(33.55, -1) = 30.
-    - `decimal-places = 0` - The function will round the value to integer. In this case the argument can be omitted. E.g. roundBankers(2.5, 0) = 2.
+    - `decimal-places > 0` — The function rounds the value to the given position right of the decimal point. E.g. roundBankers(3.55, 1).
+    - `decimal-places < 0` — The function rounds the value to the given position left of the decimal point. E.g. roundBankers(33.55, -1) = 30.
+    - `decimal-places = 0` — The function rounds the value to integer. In this case the argument can be omitted. E.g. roundBankers(2.5, 0) = 2.
     
+ <ul>
+   <li>Coffee</li>
+   <li>Tea
+     <ul>
+       <li>Black tea</li>
+       <li>Green tea</li>
+     </ul>
+   </li>
+   <li>Milk</li>
+ </ul>
+ 
 **Returned value**
-
-The rounded number of the same type as the input number.
-
 
 Type: [all Data Types](../../data_types/index.md#data_types).
 
