@@ -84,7 +84,7 @@ round(3.65, 1) = 3.6
 
 ## roundBankers {#roundbankers}
 
-Rounds a value using Banker's rounding.
+Rounds a value using banker's rounding.
 
 Banker's rounding is a method of rounding fractional numbers. When the rounding number is a half between two numbers, it is rounded to the nearest even number. E.g. 3.5 rounds up to 4, 2.5 rounds down to 2.
 
@@ -109,19 +109,10 @@ roundBankers(expression [, decimal_places])
     - `decimal-places > 0` — The function rounds the value to the given position right of the decimal point. E.g. roundBankers(3.55, 1).
     - `decimal-places < 0` — The function rounds the value to the given position left of the decimal point. E.g. roundBankers(33.55, -1) = 30.
     - `decimal-places = 0` — The function rounds the value to integer. In this case the argument can be omitted. E.g. roundBankers(2.5, 0) = 2.
-    
- <ul>
-   <li>Coffee</li>
-   <li>Tea
-     <ul>
-       <li>Black tea</li>
-       <li>Green tea</li>
-     </ul>
-   </li>
-   <li>Milk</li>
- </ul>
- 
+
 **Returned value**
+
+A rounded value by banker's rounding method.
 
 Type: [all Data Types](../../data_types/index.md#data_types).
 

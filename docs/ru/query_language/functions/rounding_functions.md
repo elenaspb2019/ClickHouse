@@ -111,6 +111,8 @@ roundBankers(expression [, decimal_places])
 
 **Возвращаемое значение**
 
+Округленное значение по методу банковского округления.
+
 Тип: [все Типы Данных](../../data_types/index.md#data_types).
 
 
