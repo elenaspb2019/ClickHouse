@@ -104,7 +104,7 @@ roundBankers(expression [, decimal_places])
 
 **Parameters** 
 
-- `expression` — A number to be rounded. Can be any [expression](../syntax.md#syntax-expressions) returning the numeric [data type](../../data_types/index.md#data_types). E.g.
+- `expression` — A number to be rounded. Can be any [expression](../syntax.md#syntax-expressions) returning the numeric [data type](../../data_types/index.md#data_types).
 - `decimal-places` — An integer value.
     - `decimal-places > 0` — The function rounds the value to the given position right of the decimal point. E.g. roundBankers(3.55, 1).
     - `decimal-places < 0` — The function rounds the value to the given position left of the decimal point. E.g. roundBankers(33.55, -1) = 30.
@@ -112,10 +112,7 @@ roundBankers(expression [, decimal_places])
 
 **Returned value**
 
-A rounded value by banker's rounding method.
-
-Type: [all Data Types](../../data_types/index.md#data_types).
-
+A value rounded by banker's rounding method.
 
 ### Examples
 
