@@ -766,7 +766,7 @@ So, result of function depends on partition of data to blocks and on order of da
 
 The function lets you extract data from the table the same way as from a [dictionary](https://clickhouse.yandex/docs/en/query_language/dicts/).
 
-Gets data from [Join](https://clickhouse.yandex/docs/en/operations/table_engines/join/) tables using the specified join key.
+Gets data from [Join](../../join/#creating-a-table) tables using the specified join key.
 
 Only supports tables created with the `ENGINE = Join(ANY, LEFT, <join_keys>)` statement.
 
