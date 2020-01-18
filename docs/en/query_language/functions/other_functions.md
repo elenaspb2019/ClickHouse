@@ -778,20 +778,18 @@ joinGet(join_storage_table_name, `value_column`, join_keys)
 
 **Parameters** 
 
-- `join_storage_table_name` — [ID](../../syntax/#syntax-identifiers) indicates where search is performed. In most cases, this is the name of the database and/or table. 
-Firstly, ID is searched in the default database (see parameter `default_database` in the config), and then in other databases. To override the default database, use the `USE db_name` command.
-   - Specify only the table name for tables with a unique name.
-   - Specify the database and then the table for non-unique tables. Use a dot as the separator.
-
+- `join_storage_table_name` — [Identifier](../../syntax/#syntax-identifiers) indicates where search is performed. In most cases, this is the name of the database and/or table. 
+Firstly, identifier is searched in the default database (see parameter `default_database` in the config), and then in other databases. To override the default database, use the `USE db_name` command.
+     - Specify only the table name for tables with a unique name.
+     - Specify the database and then the table for non-unique tables. Use a dot as the separator.
 - `value_column` — name of the column of the table that contains required data.
-
 - `join_keys` — list of keys.
 
 **Returned value**
 
 Returns list of values corresponded to list of keys.
 
-If certain doesn't exist in source table then `0` or `null` will be returned based on [join_use_nulls](https://clickhouse.yandex/docs/en/operations/settings/settings/#settings-join_use_nulls) setting. 
+If certain doesn't exist in source table then `0` or `null` will be returned based on [join_use_nulls](../../settings/#settings-join_use_nulls) setting. 
 
 Type: [all Data Types](https://clickhouse.yandex/docs/en/data_types/).
 
