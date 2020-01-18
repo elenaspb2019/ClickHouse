@@ -762,7 +762,7 @@ Takes the states of the aggregate function and returns a column with values, are
 For example, takes state of aggregate function (example runningAccumulate(uniqState(UserID))), and for each row of block, return result of aggregate function on merge of states of all previous rows and current row.
 So, result of function depends on partition of data to blocks and on order of data in block.
 
-## joinGet {#function-joinget}
+## joinGet {#joinget}
 
 The function lets you extract data from the table the same way as from a [dictionary](https://clickhouse.yandex/docs/en/query_language/dicts/).
 
