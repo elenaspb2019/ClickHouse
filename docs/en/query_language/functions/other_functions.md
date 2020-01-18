@@ -773,12 +773,15 @@ Only supports tables created with the `ENGINE = Join(ANY, LEFT, <join_keys>)` st
 **Syntax** 
 
 ```sql
-joinGet(`join_storage_table_name`, `value_column`, join_keys)
+joinGet(join_storage_table_name, `value_column`, join_keys)
 ```
 
 **Parameters** 
 
-- `join_storage_table_name` — name of the table where search will be performed.
+- `join_storage_table_name` — [ID](../../syntax/#syntax-identifiers) indicates where search is performed. In most cases, this is the name of the database and/or table. 
+Firstly, ID is searched in the default database (see parameter `default_database` in the config), and then in other databases. To override the default database, use the `USE db_name` command.
+   - Specify only the table name for tables with a unique name.
+   - Specify the database and then the table for non-unique tables. Use a dot as the separator.
 
 - `value_column` — name of the column of the table that contains required data.
 
@@ -811,18 +814,18 @@ INSERT INTO id_val VALUES (1,11)(2,12)(4,13)
 Query:
 
 ```sql
-SELECT joinGet('id_val','val',toUInt32(number)) from numbers(4)
+SELECT joinGet(dbtest.id_val,'val',toUInt32(number)) from numbers(4)
 ```
 
 Result:
 
 ```text
-┌─joinGet('id_val', 'val', toUInt32(number))─┐
-│                                          0 │
-│                                         11 │
-│                                         12 │
-│                                          0 │
-└────────────────────────────────────────────┘
+┌─joinGet(dbtest.id_val, 'val', toUInt32(number))─┐
+│                                               0 │
+│                                              11 │
+│                                              12 │
+│                                               0 │
+└─────────────────────────────────────────────────┘
 ```
 
 ## modelEvaluate(model_name, ...) {#function-modelevaluate}

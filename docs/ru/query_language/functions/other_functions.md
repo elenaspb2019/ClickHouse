@@ -748,17 +748,20 @@ SELECT filesystemAvailable() AS "Free space", toTypeName(filesystemAvailable()) 
 
 Получает данные из таблиц [Join](https://clickhouse.yandex/docs/ru/operations/table_engines/join/) по ключу.
 
-Поддержаны только таблицы, созданные запросом с `ENGINE = Join(ANY, LEFT, <join_keys>)`. 
+Поддерживаются только таблицы, созданные с `ENGINE = Join(ANY, LEFT, <join_keys>)`. 
 
 **Синтаксис** 
 
 ```sql
-joinGet(`join_storage_table_name`, `value_column`, join_keys)
+joinGet(join_storage_table_name, `value_column`, join_keys)
 ```
 
 **Параметры** 
 
-- `join_storage_table_name` — название таблицы, откуда производится выборка данных.
+- `join_storage_name` — [идентификатор](../../syntax/#syntax-identifiers), который указывает, откуда производится выборка данных. Чаще всего это имя базы данных и/или таблица. 
+Поиск по идентификатору осуществляется сначала в базе данных по умолчанию (в конфигурации `default_database`), а затем по всем базам данных. Чтобы переопределить базу данных по умолчанию, используйте команду `USE db_name`.
+   - Для таблиц с уникальным названием достататочно указать только имя таблицы.
+   - Для неуникальных таблиц укажите базу данных, а затем таблицу. В качестве разделителя используйте точку.
 
 - `value_column` — столбец, из которого нужно произвести выборку данных.
 
@@ -794,18 +797,18 @@ INSERT INTO id_val VALUES (1,11)(2,12)(4,13)
 Запрос:
 
 ```sql
-SELECT joinGet('id_val','val',toUInt32(number)) from numbers(4)
+SELECT joinGet(dbtest.id_val,'val',toUInt32(number)) from numbers(4)
 ```
 
 Результат:
 
 ```text
-┌─joinGet('id_val', 'val', toUInt32(number))─┐
-│                                          0 │
-│                                         11 │
-│                                         12 │
-│                                          0 │
-└────────────────────────────────────────────┘
+┌─joinGet(dbtest.id_val, 'val', toUInt32(number))─┐
+│                                               0 │
+│                                              11 │
+│                                              12 │
+│                                               0 │
+└─────────────────────────────────────────────────┘
 ```
 
 ## modelEvaluate(model_name, ...)
