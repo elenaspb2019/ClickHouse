@@ -1158,7 +1158,7 @@ Result:
 
 **See Also** 
 
-- [quantileexactweighted](#quantileexactweighted)
+- [quantileExactWeighted](#quantileexactweighted)
 
 ## medianTiming(x) {#mediantiming}
 
