@@ -1049,7 +1049,7 @@ Result:
 
 - [quantileDeterministic](#agg_function-quantiledeterministic)
 
-## medianExact {#medianExact}
+## medianExact {#medianexact}
 
 Computes the median exactly. This method uses partially sorted array in the algorithm.
 The function consumes O(n) memory, where 'n' is the number of values.
@@ -1093,15 +1093,15 @@ Result:
 
 **See Also**
 
-- [quantileExact](##quantileexact)
+- [quantileExact](#quantileexact)
 
-## medianExactWeighted {#medianExactWeighted}
+## medianExactWeighted {#medianexactweighted}
 
 Computes the median exactly according to the weight of each value. Weight means that value present 'weight' times.
 The arguments of the function can be considered as histograms, where the value 'x' corresponds to a histogram "column" of the height 'weight', 
 and the function itself can be considered as a summation of histograms.
 
-Since this function is more effective then [medianExact](#medianExact) since it uses hash table in the algorithm.
+Since this function is more effective then [medianExact](#medianexact) since it uses hash table in the algorithm.
 
 **Syntax**
 
