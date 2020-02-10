@@ -931,11 +931,8 @@ The result depends on the order of running the query, and is nondeterministic.
 
 ## median {#median}
 
-Computes median or 2-quantile of numeric data set. Median is a middle number of sequence, that separates higher half from the lower half of this sequence. If number of values in the data set is odd then mediana usually is an arithmetic mean of two middle values.
+Computes [median](https://en.wikipedia.org/wiki/Median) of a numeric data sample.
 
-This function uses [reservoir sampling](https://en.wikipedia.org/wiki/Reservoir_sampling) method with a reservoir size up to 8192. This algorithm uses a random number generator, thus the function is non-deterministic. Also in has low accuracy. To get exact result, use the [medianExact](#medianexact) function.
-
-This algorithm provides very low accuracy
 
 **Syntax** 
 
@@ -943,20 +940,18 @@ This algorithm provides very low accuracy
 median(x);
 ```
 
-Alias: `quantile`. 
-
-Median is an alias of `quantile` function with an argument of 0.5 (50%).
+Median is an alias of [quantile(0.5)(x)](#agg_function-quantile)
 
 **Parameters** 
 
-- `x` — numeric data types, Date and DateTime.
+- `x` — Number. Expression resulting in numeric [data types](./data_types), [Date](./data_types/date) and [DateTime](./data_types/datetime).
 
 **Returned value**
 
 - The middle value for the sample with odd number of values.
 - Arithmetic mean of two middle values for the set with an even number of values.  The function doesn't round the result.  
 
-Type: Float64, UInt64 and Int64 for numeric, Date and DateTime respectfully for corresponding data types.
+Type: The same data type as the type of the input data.
 
 **Example**
 
@@ -992,8 +987,7 @@ Result:
 ## medianDeterministic {#medianDeterministic}
 
 Computes median or 2-quantile of numeric data set. This function uses [reservoir sampling](https://en.wikipedia.org/wiki/Reservoir_sampling) with a reservoir size up to 8192. 
-Function is deterministic due to usage of hash of passed number - the "determinator" - in the algorithm.
-The same determinator value should not occur too often.
+
 
 This algorithm provides very low accuracy
 
@@ -1003,20 +997,19 @@ This algorithm provides very low accuracy
 medianDeterministic(x, determinator);
 ```
 
-Alias: `quantileDeterministic`. 
-
-Median is an alias of `quantileDeterministiquantile` function with an argument of 0.5 (50%).
+MedianDeterministic is an alias of [quantileDeterministiquantile(0.5)(x)](#agg_function-quantiledeterministic)
 
 **Parameters** 
 
-- `x` — numeric data types, Date and DateTime. 
-- `determinator` — this is a number whose hash is used instead of a random number generator in the reservoir sampling algorithm. For the function to work correctly, the same determinator value should not occur too often. For the determinator, you can use an event ID, user ID, and so on. Using integer (0 or greater).
+- `x` — Number. Expression resulting in numeric [data types](./data_types), [Date](./data_types/date) and [DateTime](./data_types/datetime).
+- `determinator` — Number whose hash is used instead of a random number generator in the reservoir sampling algorithm. For the function to work correctly, the same determinator value should not occur too often. For the determinator, you can use an event ID, user ID, and so on. Using integer (0 or greater).
+Function is deterministic due to usage of hash of passed number - the "determinator" - in the algorithm. The same determinator value should not occur too often.
 
 **Returned value**
 
 The middle value will be returned from the set with an odd number of values. For the set with an even number of values arithmetic mean of two middle values will be returned without rounding.  
 
-Type: Float64, UInt64 and Int64 for numeric, Date and DateTime respectfully for corresponding data types.
+Type: The same data type as the type of the input data.
 
 **Example**
 
@@ -1061,19 +1054,18 @@ The function consumes O(n) memory, where 'n' is the number of values.
 medianExact(x);
 ```
 
-Alias: `QuantileExact`.
+MedianExact is an alias of [quantileExact(0.5)(x)](#quantileexact).
 
-Median is an alias of `QuantileExact` function with an argument of 0.5 (50%).
 
 **Parameters**
 
-- `x` — numeric data types, Date and DateTime.
+- `x` — Number. Expression resulting in numeric [data types](./data_types), [Date](./data_types/date) and [DateTime](./data_types/datetime).
 
 **Returned value**
 
 The middle value will be returned from the set with an odd number of values. For the set with an even number of values higher value from two middle values will be returned.
 
-Type: Float64, UInt64 and Int64 for numeric, Date and DateTime respectfully for corresponding data types.
+Type: The same data type as the type of the input data.
 
 **Example**
 
@@ -1099,10 +1091,10 @@ Result:
 ## medianExactWeighted {#medianexactweighted}
 
 Computes the median exactly according to the weight of each value. Weight means that value present 'weight' times.
-The arguments of the function can be considered as histograms, where the value 'x' corresponds to a histogram "column" of the height 'weight', 
-and the function itself can be considered as a summation of histograms.
+The function itself can be considered as a summation of histograms.
 
-Since this function is more effective then [medianExact](#medianexact) since it uses hash table in the algorithm.
+This function works more efficiently then  [medianExact](#medianexact) because it uses hash table in the algorithm.
+
 
 **Syntax**
 
@@ -1110,20 +1102,19 @@ Since this function is more effective then [medianExact](#medianexact) since it 
 medianExactWeighted(x, weight);
 ```
 
-Alias: `quantileExactWeighted`. 
+MedianExactWeighted is an alias of [quantileExactWeighted(0.5)(x)](#quantileexactweighted).
 
-Median is an alias of `quantileExactWeighted` function with an argument of 0.5 (50%).
 
 **Parameters** 
 
-- `x` — numeric data types, Date and DateTime.
-- `weight` — shows how many times `x` value repeated. 
+- `x` — Number. Expression resulting in numeric [data types](./data_types), [Date](./data_types/date) and [DateTime](./data_types/datetime).
+- `weight` — Number. Shows how many times `x` value repeated. 
 
 **Returned value**
 
 The middle value will be returned from the set with an odd number of values. For the set with an even number of values lower value from two middle values will be returned.
 
-Type: Float64, UInt64 and Int64 for numeric, Date and DateTime respectfully for corresponding data types.
+Type: The same data type as the type of the input data.
 
 **Example**
 
@@ -1172,13 +1163,11 @@ The result is deterministic. The function is intended for calculating page loadi
 medianTiming(x);
 ```
 
-Alias: `QuantileTiming`. 
-
-Median is an alias of `QuantileTiming` function with an argument of 0.5 (50%).
+MedianTiming is an alias of [quantileTiming(0.5)(x)](#agg_function-quantiletiming).
 
 **Parameters**
 
-- `x` — numeric data types, Date and DateTime.
+- `x` — Number. Expression resulting in numeric [data types](./data_types), [Date](./data_types/date) and [DateTime](./data_types/datetime).
 
 **Returned value**
 
@@ -1233,14 +1222,13 @@ The result is deterministic. The function is intended for calculating page loadi
 medianExactWeighted(x, weight) ;
 ```
 
-Alias: `quantileTimingWeighted`. 
-
-Median is an alias of `quantileTimingWeighted` function with an argument of 0.5 (50%).
+MedianTimingWeighted is an alias of [quantileTimingWeighted(0.5)(x)](#quantiletimingweighted).
 
 **Parameters** 
 
-- `x` — numeric data types, Date and DateTime.
-- `weight` — shows how many times `x` value repeated. 
+- `x` — Number. Expression resulting in numeric [data types](./data_types), [Date](./data_types/date) and [DateTime](./data_types/datetime).
+- `weight` — Number. Shows how many times `x` value repeated. 
+ 
 
 **Returned value**
 
@@ -1296,19 +1284,17 @@ Maximal error is 1% and memory consumption is log(n), where 'n' is the number of
 medianTDiges(x);
 ```
 
-Alias: `quantileTDigest`. 
-
-Median is an alias of `quantileTDigest` function with an argument of 0.5 (50%).
+MedianTDigest(x) is an alias of [quantileTDigest(0.5)(x)](#quantiletdigest).
 
 **Parameters** 
 
-- `x` —  numeric data types, Date and DateTime.
+- `x` — Number. Expression resulting in numeric [data types](./data_types), [Date](./data_types/date) and [DateTime](./data_types/datetime).
 
 **Returned value**
 
 The middle value will be returned from the set with an odd number of values. For the set with an even number of values higher value from two middle values will be returned.
 
-Type: Float64, UInt64 and Int64 for numeric, Date and DateTime respectfully for corresponding data types.
+Type: The same data type as the type of the input data.
 
 **Example**
 
@@ -1362,20 +1348,18 @@ Maximal error is 1% and memory consumption is log(n), where 'n' is the number of
 medianTDigestWeighted(x,weight);
 ```
 
-Alias: `quantileTDigestWeighted`.
-
-Median is an alias of `quantileTDigestWeighted` function with an argument of 0.5 (50%).
+MedianTDigestWeighted(x,weight) is an alias of quantileTDigestWeighted(0.5)(x).
 
 **Parameters**
 
-- `x` —  numeric data types, Date and DateTime.
-- `weight` — show how many times parameter `x` repeated.
+- `x` — Number. Expression resulting in numeric [data types](./data_types), [Date](./data_types/date) and [DateTime](./data_types/datetime).
+- `weight` — Number. Shows how many times `x` value repeated. 
 
 **Returned value**
 
 The middle value will be returned from the set with an odd number of values. For the set with an even number of values higher value from two middle values will be returned.
 
-Type: Float64, UInt64 and Int64 for numeric, Date and DateTime respectfully for corresponding data types.
+Type: The same data type as the type of the input data.
 
 **Example**
 
