@@ -1107,7 +1107,7 @@ MedianExactWeighted is an alias of [quantileExactWeighted(0.5)(x)](#quantileexac
 
 **Parameters** 
 
-- `x` — Number. Expression resulting in numeric [data types](./data_types), [Date](./data_types/date) and [DateTime](./data_types/datetime).
+- `x` — Number. Expression resulting in numeric [data types](../../data_types), [Date](./data_types/date) and [DateTime](./data_types/datetime).
 - `weight` — Number. Shows how many times `x` value repeated. 
 
 **Returned value**
