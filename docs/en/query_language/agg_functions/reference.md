@@ -933,7 +933,7 @@ The result depends on the order of running the query, and is nondeterministic.
 
 Computes median or 2-quantile of numeric data set. Median is a middle number of sequence, that separates higher half from the lower half of this sequence. If number of values in the data set is odd then mediana usually is an arithmetic mean of two middle values.
 
-This function based on [reservoir sampling](https://en.wikipedia.org/wiki/Reservoir_sampling) method with a reservoir size up to 8192. Since this algorithm uses a random number generator this function is non-deterministic.
+This function uses [reservoir sampling](https://en.wikipedia.org/wiki/Reservoir_sampling) method with a reservoir size up to 8192. This algorithm uses a random number generator, thus the function is non-deterministic. Also in has low accuracy. To get exact result, use the [medianExact](#medianexact) function.
 
 This algorithm provides very low accuracy
 
