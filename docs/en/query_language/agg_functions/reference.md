@@ -1352,7 +1352,7 @@ MedianTDigestWeighted(x,weight) is an alias of quantileTDigestWeighted(0.5)(x).
 
 **Parameters**
 
-- `x` — Number. Expression resulting in numeric [data types](./data_types), [Date](./data_types/date) and [DateTime](./data_types/datetime).
+- `x` — Number. Expression resulting in numeric [data types](../../data_types.md), [Date](../../data_types/date.md) and [DateTime](../../data_types/datetime.md).
 - `weight` — Number. Shows how many times `x` value repeated. 
 
 **Returned value**
