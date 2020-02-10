@@ -953,7 +953,8 @@ Median is an alias of `quantile` function with an argument of 0.5 (50%).
 
 **Returned value**
 
-The middle value will be returned from the set with an odd number of values. For the set with an even number of values arithmetic mean of two middle values will be returned without any rounding.  
+- The middle value for the sample with odd number of values.
+- Arithmetic mean of two middle values for the set with an even number of values.  The function doesn't round the result.  
 
 Type: Float64, UInt64 and Int64 for numeric, Date and DateTime respectfully for corresponding data types.
 
