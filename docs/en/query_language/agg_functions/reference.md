@@ -1163,7 +1163,7 @@ Result:
 
 ## medianTiming(x) {#mediantiming}
 
-Median function optimized for processing of unix timestamps. Computes the median with determined precision.
+Computes the median with determined precision. Optimized for processing of unix timestamps.
 The result is deterministic. The function is intended for calculating page loading time medians in milliseconds. 
 
 **Syntax** 
