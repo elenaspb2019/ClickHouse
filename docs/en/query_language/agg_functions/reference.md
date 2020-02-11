@@ -933,6 +933,7 @@ The result depends on the order of running the query, and is nondeterministic.
 
 Computes [median](https://en.wikipedia.org/wiki/Median) of a numeric data sample.
 
+This function uses [reservoir sampling](https://en.wikipedia.org/wiki/Reservoir_sampling) method with a reservoir size up to 8192. This algorithm uses a random number generator, thus the function is non-deterministic. Also in has low accuracy. To get exact result, use the [medianExact](#medianexact) function.
 
 **Syntax** 
 
@@ -940,7 +941,7 @@ Computes [median](https://en.wikipedia.org/wiki/Median) of a numeric data sample
 median(x);
 ```
 
-Median is an alias of [quantile(0.5)(x)](#agg_function-quantile)
+Median is an alias of [quantile(0.5)(x)](#agg_function-quantile).
 
 **Parameters** 
 
@@ -986,7 +987,7 @@ Result:
 
 ## medianDeterministic {#medianDeterministic}
 
-Computes median or 2-quantile of numeric data set. This function uses [reservoir sampling](https://en.wikipedia.org/wiki/Reservoir_sampling) with a reservoir size up to 8192. 
+Computes median of numeric data set. This function uses [reservoir sampling](https://en.wikipedia.org/wiki/Reservoir_sampling) with a reservoir size up to 8192. 
 
 
 This algorithm provides very low accuracy
@@ -1007,7 +1008,8 @@ Function is deterministic due to usage of hash of passed number - the "determina
 
 **Returned value**
 
-The middle value will be returned from the set with an odd number of values. For the set with an even number of values arithmetic mean of two middle values will be returned without rounding.  
+- The middle value will be returned from the set with an odd number of values.
+- For the set with an even number of values arithmetic mean of two middle values will be returned without rounding.  
 
 Type: The same data type as the type of the input data.
 
@@ -1045,7 +1047,7 @@ Result:
 
 ## medianExact {#medianexact}
 
-Computes the median exactly. This method uses partially sorted array in the algorithm.
+Computes median exactly. This method uses partially sorted array in the algorithm.
 The function consumes O(n) memory, where 'n' is the number of values.
 
 **Syntax** 
@@ -1063,7 +1065,8 @@ MedianExact is an alias of [quantileExact(0.5)(x)](#quantileexact).
 
 **Returned value**
 
-The middle value will be returned from the set with an odd number of values. For the set with an even number of values higher value from two middle values will be returned.
+- The middle value will be returned from the set with an odd number of values.
+- For the set with an even number of values higher value from two middle values will be returned.
 
 Type: The same data type as the type of the input data.
 
@@ -1090,7 +1093,7 @@ Result:
 
 ## medianExactWeighted {#medianexactweighted}
 
-Computes the median exactly according to the weight of each value. Weight means that value present 'weight' times.
+Computes median exactly according to the weight of each value. Weight means that value present 'weight' times.
 The function itself can be considered as a summation of histograms.
 
 This function works more efficiently then  [medianExact](#medianexact) because it uses hash table in the algorithm.
@@ -1112,7 +1115,8 @@ MedianExactWeighted is an alias of [quantileExactWeighted(0.5)(x)](#quantileexac
 
 **Returned value**
 
-The middle value will be returned from the set with an odd number of values. For the set with an even number of values lower value from two middle values will be returned.
+- The middle value will be returned from the set with an odd number of values.
+- For the set with an even number of values lower value from two middle values will be returned.
 
 Type: The same data type as the type of the input data.
 
@@ -1154,8 +1158,8 @@ Result:
 
 ## medianTiming(x) {#mediantiming}
 
-Computes the median with determined precision. Optimized for processing of unix timestamps.
-The result is deterministic. The function is intended for calculating page loading time medians in milliseconds. 
+Computes median with determined precision. Optimized for processing of unix timestamps.
+The result is deterministic. The function is intended for analyzing time data like page loading time.
 
 **Syntax** 
 
@@ -1171,7 +1175,8 @@ MedianTiming is an alias of [quantileTiming(0.5)(x)](#agg_function-quantiletimin
 
 **Returned value**
 
-The middle value will be returned from the set with an odd number of values. For the set with an even number of values higher value from two middle values will be returned.
+- The middle value will be returned from the set with an odd number of values.
+- For the set with an even number of values higher value from two middle values will be returned.
 
 Type: `Float32`.
 
@@ -1181,29 +1186,35 @@ Input table:
 
 ```text
 SELECT *
-FROM dates
+FROM request
 
-┌───────date─┐
-│ 1977-01-01 │
-│ 1980-01-01 │
-│ 1988-01-01 │
-│ 2014-01-01 │
-└────────────┘
+┌─response_time─┐
+│            72 │
+│           112 │
+│           126 │
+│           145 │
+│           104 │
+│           242 │
+│           313 │
+│           168 │
+│           108 │
+└───────────────┘
 ```
 
 Query:
 
 ```sql
-SELECT toDate(medianTiming(date))
-FROM dates
+SELECT medianTiming(response_time)
+FROM request
 ```
 
 Result:
 
 ```text
-┌─toDate(medianTiming(date))─┐
-│                 1988-01-01 │
-└────────────────────────────┘
+┌─medianTiming(response_time)─┐
+│                         126 │
+└─────────────────────────────┘
+
 ```
 
 **See Also**
@@ -1214,7 +1225,7 @@ Result:
 
 Median function optimized for processing of unix timestamps according to the weight of each value. Weight means that value present 'weight' times.
 Computes the median with determined precision.
-The result is deterministic. The function is intended for calculating page loading time medians in milliseconds. 
+The result is deterministic. The function is intended for analyzing time data like page loading time. 
 
 **Syntax**
 
@@ -1232,7 +1243,8 @@ MedianTimingWeighted is an alias of [quantileTimingWeighted(0.5)(x)](#quantileti
 
 **Returned value**
 
-The middle value will be returned from the set with an odd number of values. For the set with an even number of values higher value from two middle values will be returned.
+- The middle value will be returned from the set with an odd number of values.
+- For the set with an even number of values higher value from two middle values will be returned.
 
 Type: `Float32`.
 
@@ -1242,29 +1254,31 @@ Input table:
 
 ```text
 SELECT *
-FROM dates
+FROM request
 
-┌───────date─┬─weight─┐
-│ 1977-01-01 │      1 │
-│ 1980-01-01 │      2 │
-│ 1988-01-01 │      3 │
-│ 2014-01-01 │      7 │
-└────────────┴────────┘
+┌─response_time─┬─weight─┐
+│            68 │      1 │
+│           104 │      2 │
+│           112 │      3 │
+│           126 │      2 │
+│           138 │      1 │
+│           162 │      1 │
+└───────────────┴────────┘
 ```
 
 Query:
 
 ```sql
-SELECT toDate(medianTimingWeighted(date, weight))
-FROM dates
+SELECT medianTimingWeighted(response_time, weight)
+FROM request
 ```
 
 Result:
 
 ```text
-┌─toDate(medianTimingWeighted(date, weight))─┐
-│                                 2014-01-01 │
-└────────────────────────────────────────────┘
+┌─medianTimingWeighted(response_time, weight)─┐
+│                                         112 │
+└─────────────────────────────────────────────┘
 ```
 
 **See Also**
@@ -1273,7 +1287,7 @@ Result:
 
 ## medianTDigest {#medianTDigest}
 
-Computes median or 2-quantile of numeric data set uses the [t-digest](https://github.com/tdunning/t-digest/blob/master/docs/t-digest-paper/histo.pdf) algorithm.
+Computes median of numeric data set uses the [t-digest](https://github.com/tdunning/t-digest/blob/master/docs/t-digest-paper/histo.pdf) algorithm.
 The calculating value depends on the order of running the query, and is nondeterministic.
 
 Maximal error is 1% and memory consumption is log(n), where 'n' is the number of values.
@@ -1292,7 +1306,8 @@ MedianTDigest(x) is an alias of [quantileTDigest(0.5)(x)](#quantiletdigest).
 
 **Returned value**
 
-The middle value will be returned from the set with an odd number of values. For the set with an even number of values higher value from two middle values will be returned.
+- The middle value will be returned from the set with an odd number of values.
+- For the set with an even number of values higher value from two middle values will be returned.
 
 Type: The same data type as the type of the input data.
 
@@ -1337,7 +1352,7 @@ Result:
 
 ## medianTDigestWeighted {#medianTDigestWeighted}
 
-Computes median or 2-quantile of numeric data set uses the [t-digest](https://github.com/tdunning/t-digest/blob/master/docs/t-digest-paper/histo.pdf) algorithm according to the weight of each value. Weight means that value present 'weight' times.
+Computes median of numeric data set uses the [t-digest](https://github.com/tdunning/t-digest/blob/master/docs/t-digest-paper/histo.pdf) algorithm according to the weight of each value. Weight means that value present 'weight' times.
 The result depends on the order of running the query, and is nondeterministic.
 
 Maximal error is 1% and memory consumption is log(n), where 'n' is the number of values.
@@ -1357,7 +1372,8 @@ MedianTDigestWeighted(x,weight) is an alias of quantileTDigestWeighted(0.5)(x).
 
 **Returned value**
 
-The middle value will be returned from the set with an odd number of values. For the set with an even number of values higher value from two middle values will be returned.
+- The middle value will be returned from the set with an odd number of values.
+- For the set with an even number of values higher value from two middle values will be returned.
 
 Type: The same data type as the type of the input data.
 
