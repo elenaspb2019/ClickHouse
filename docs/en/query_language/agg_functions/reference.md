@@ -998,7 +998,7 @@ This algorithm provides very low accuracy
 medianDeterministic(x, determinator);
 ```
 
-MedianDeterministic is an alias of [quantileDeterministiquantile(0.5)(x)](#agg_function-quantiledeterministic)
+MedianDeterministic is an alias of [quantileDeterministiquantile(0.5)(x)](#agg_function-quantiledeterministic).
 
 **Parameters** 
 
