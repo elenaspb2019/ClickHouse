@@ -944,7 +944,7 @@ Median is an alias of [quantile(0.5)(x)](#agg_function-quantile)
 
 **Parameters** 
 
-- `x` — Number. Expression resulting in numeric [data types](./data_types), [Date](./data_types/date) and [DateTime](./data_types/datetime).
+- `x` — Number. Expression resulting in numeric [data types](../../data_types/index.md#data_types), [Date](../../data_types/date.md#date) and [DateTime](../../data_types/datetime.md).
 
 **Returned value**
 
@@ -1001,7 +1001,7 @@ MedianDeterministic is an alias of [quantileDeterministiquantile(0.5)(x)](#agg_f
 
 **Parameters** 
 
-- `x` — Number. Expression resulting in numeric [data types](./data_types), [Date](./data_types/date) and [DateTime](./data_types/datetime).
+- `x` — Number. Expression resulting in numeric [data types](../../data_types/index.md#data_types), [Date](../../data_types/date.md#date) and [DateTime](../../data_types/datetime.md).
 - `determinator` — Number whose hash is used instead of a random number generator in the reservoir sampling algorithm. For the function to work correctly, the same determinator value should not occur too often. For the determinator, you can use an event ID, user ID, and so on. Using integer (0 or greater).
 Function is deterministic due to usage of hash of passed number - the "determinator" - in the algorithm. The same determinator value should not occur too often.
 
@@ -1059,7 +1059,7 @@ MedianExact is an alias of [quantileExact(0.5)(x)](#quantileexact).
 
 **Parameters**
 
-- `x` — Number. Expression resulting in numeric [data types](./data_types), [Date](./data_types/date) and [DateTime](./data_types/datetime).
+- `x` — Number. Expression resulting in numeric [data types](../../data_types/index.md#data_types), [Date](../../data_types/date.md#date) and [DateTime](../../data_types/datetime.md).
 
 **Returned value**
 
@@ -1107,7 +1107,7 @@ MedianExactWeighted is an alias of [quantileExactWeighted(0.5)(x)](#quantileexac
 
 **Parameters** 
 
-- `x` — Number. Expression resulting in numeric [data types](../../data_types), [Date](./data_types/date) and [DateTime](./data_types/datetime).
+- `x` — Number. Expression resulting in numeric [data types](../../data_types/index.md#data_types), [Date](../../data_types/date.md#date) and [DateTime](../../data_types/datetime.md).
 - `weight` — Number. Shows how many times `x` value repeated. 
 
 **Returned value**
@@ -1167,7 +1167,7 @@ MedianTiming is an alias of [quantileTiming(0.5)(x)](#agg_function-quantiletimin
 
 **Parameters**
 
-- `x` — Number. Expression resulting in numeric [data types](./data_types), [Date](./data_types/date) and [DateTime](./data_types/datetime).
+- `x` — Number. Expression resulting in numeric [data types](../../data_types/index.md#data_types), [Date](../../data_types/date.md#date) and [DateTime](../../data_types/datetime.md).
 
 **Returned value**
 
@@ -1226,7 +1226,7 @@ MedianTimingWeighted is an alias of [quantileTimingWeighted(0.5)(x)](#quantileti
 
 **Parameters** 
 
-- `x` — Number. Expression resulting in numeric [data types](./data_types), [Date](./data_types/date) and [DateTime](./data_types/datetime).
+- `x` — Number. Expression resulting in numeric [data types](../../data_types/index.md#data_types), [Date](../../data_types/date.md#date) and [DateTime](../../data_types/datetime.md).
 - `weight` — Number. Shows how many times `x` value repeated. 
  
 
@@ -1288,7 +1288,7 @@ MedianTDigest(x) is an alias of [quantileTDigest(0.5)(x)](#quantiletdigest).
 
 **Parameters** 
 
-- `x` — Number. Expression resulting in numeric [data types](./data_types), [Date](./data_types/date) and [DateTime](./data_types/datetime).
+- `x` — Number. Expression resulting in numeric [data types](../../data_types/index.md#data_types), [Date](../../data_types/date.md#date) and [DateTime](../../data_types/datetime.md).
 
 **Returned value**
 
