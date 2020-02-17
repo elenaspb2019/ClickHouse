@@ -1281,7 +1281,7 @@ A calculated value depends on the order of the query processing, and is non-dete
 **Syntax**
 
 ```sql
-medianTDiges(x)
+medianTDigest(x)
 ```
 
 Alias for [quantileTDigest(0.5)(x)](#quantiletdigest).
