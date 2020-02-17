@@ -990,7 +990,7 @@ Result:
 Computes median of numeric data set. This function uses [reservoir sampling](https://en.wikipedia.org/wiki/Reservoir_sampling) with a reservoir size up to 8192. 
 
 
-This algorithm provides very low accuracy
+This algorithm provides very low accuracy.
 
 **Syntax** 
 
@@ -1004,7 +1004,7 @@ MedianDeterministic is an alias of [quantileDeterministiquantile(0.5)(x)](#agg_f
 
 - `x` — Number. Expression resulting in numeric [data types](../../data_types/index.md#data_types), [Date](../../data_types/date.md#date) and [DateTime](../../data_types/datetime.md).
 - `determinator` — Number whose hash is used instead of a random number generator in the reservoir sampling algorithm. For the function to work correctly, the same determinator value should not occur too often. For the determinator, you can use an event ID, user ID, and so on. Using integer (0 or greater).
-Function is deterministic due to usage of hash of passed number - the "determinator" - in the algorithm. The same determinator value should not occur too often.
+Function is deterministic due to usage of hash of passed number - the "determinator" - in the algorithm. 
 
 **Returned value**
 
