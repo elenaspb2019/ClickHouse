@@ -1351,7 +1351,7 @@ medianTDiges(x);
 Функция является алиасом для [quantileTDigest(0.5)(x)](#quantiletdigest).
 
 **Параметры** 
-..
+
 - `x` — Число типов [data types](../../data_types/index.md#data_types), [Date](../../data_types/date.md#date) и [DateTime](../../data_types/datetime.md).
 
 **Возвращаемое значение**
@@ -1416,8 +1416,9 @@ medianTDigestWeighted(x,weight);
 MedianTDigestWeighted(x,weight) is an alias of quantileTDigestWeighted(0.5)(x).
 
 **Параметры**
-..
+
 - `x` — Число типов [data types](../../data_types/index.md#data_types), [Date](../../data_types/date.md#date) и [DateTime](../../data_types/datetime.md).
+
 - `weight` — Число. Показывает, сколько раз повторяется значение `x`.
 
 
