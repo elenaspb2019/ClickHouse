@@ -1398,7 +1398,7 @@ FROM numbers(10)
 
 **См. также**
 
-- [quantileTdDigest](#quantiletdigest)
+- [quantileTDigest](#quantiletdigest)
 
 ## medianTDigestWeighted {#medianTDigestWeighted}
 
@@ -1412,8 +1412,8 @@ FROM numbers(10)
 ```sql
 medianTDigestWeighted(x,weight);
 ```
-..
-MedianTDigestWeighted(x,weight) is an alias of quantileTDigestWeighted(0.5)(x).
+
+Функция является алиасом для quantileTDigestWeighted(0.5)(x).
 
 **Параметры**
 
