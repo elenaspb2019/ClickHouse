@@ -865,7 +865,7 @@ FROM t
 
 При использовании нескольких функций `quantile` (и аналогичных) с разными уровнями в запросе, внутренние состояния не объединяются (то есть, запрос работает менее эффективно, чем мог бы). В этом случае, используйте функцию `quantiles` (и аналогичные).
 
-## quantileDeterministic(level)(x, determinator) (#agg_function-quantiledeterministic)
+## quantileDeterministic(level)(x, determinator) {#agg_function-quantiledeterministic}
 
 Работает аналогично функции `quantile`, но, в отличие от неё, результат является детерминированным и не зависит от порядка выполнения запроса.
 
@@ -923,7 +923,7 @@ SELECT quantileTiming(0.5)(number / 2) FROM numbers(10)
 └────────────────────────────────────────┘
 ```
 
-## quantileTimingWeighted(level)(x, weight) (#quantiletimingweighted)
+## quantileTimingWeighted(level)(x, weight) {#quantiletimingweighted}
 
 Отличается от функции `quantileTiming` наличием второго аргумента - «веса». Вес - неотрицательное целое число.
 Результат считается так же, как если бы в функцию `quantileTiming` значение `x` было передано `weight` количество раз.
