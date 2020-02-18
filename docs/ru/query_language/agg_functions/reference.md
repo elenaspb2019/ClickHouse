@@ -1307,7 +1307,7 @@ SELECT medianTimingWeighted(response_time, weight) FROM t
 
 ## medianTDigest {#medianTDigest}
 
-Вычисляет [медиану](https://en.wikipedia.org/wiki/Median) последовательности числовых данных применяя алгоритм [T-digest](https://github.com/tdunning/t-digest/blob/master/docs/t-digest-paper/histo.pdf).
+Вычисляет [медиану](https://en.wikipedia.org/wiki/Median) последовательности числовых данных с помощью алгоритма [T-digest](https://github.com/tdunning/t-digest/blob/master/docs/t-digest-paper/histo.pdf).
 
 Вычисляемое значение зависит от порядка обработки запроса и не детерминирован. Максимальное отклонение составляет 1%. Потребление памяти — `log(n)`, где `n` — число значений.
 
