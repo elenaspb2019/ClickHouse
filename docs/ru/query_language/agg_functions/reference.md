@@ -965,7 +965,7 @@ Aлиас для [quantile(0.5)(x)](#agg_function-quantile).
 
 **Параметры** 
 
-- `x` — Число типов [data types](../../data_types/index.md#data_types), [Date](../../data_types/date.md#date) или [DateTime](../../data_types/datetime.md).
+- `x` — Число. Выражение, возращающее значение [числового типа](../../data_types/index.md#data_types), [Date](../../data_types/date.md#date) или [DateTime](../../data_types/datetime.md).
 
 
 **Возвращаемое значение**
