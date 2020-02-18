@@ -1137,7 +1137,7 @@ medianExactWeighted(x, weight)
 **Параметры** 
 
 - `x` — Число типов [data types](../../data_types/index.md#data_types), [Date](../../data_types/date.md#date) или [DateTime](../../data_types/datetime.md).
-- `weight` — Число вхождений параметра `x`.
+- `weight` — Число повторений значения `x`.
 
 
 **Возвращаемое значение**
