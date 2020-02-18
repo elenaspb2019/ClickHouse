@@ -1013,9 +1013,10 @@ SELECT median(val) FROM t
 
 ##  medianDeterministic {#medianDeterministic}
 
-Вычисляет приблизительную [медиану](https://ru.wikipedia.org/wiki/Медиана_(статистика)) числовой последовательности данных.
+Вычисляет приблизительную [медиану](https://ru.wikipedia.org/wiki/Медиана_(статистика)) числовой последовательности.
 
-Функция использует метод [reservoir sampling](https://ru.wikipedia.org/wiki/Reservoir_sampling) с размером резервуара до 8192. Результат функции детерминирован и имеет низкую точность. Чтобы получить точную медиану, используйте функцию [medianExact](#medianexact).
+Функция использует метод [reservoir sampling](https://ru.wikipedia.org/wiki/Reservoir_sampling) с размером резервуара до 8192. При сэмплировании функция применяет генератор случайных чисел, поэтому полученный результат недетерминирован и имеет низкую точность.
+Чтобы получить точную медиану, используйте функцию [medianExact](#medianexact).
 
 **Синтаксис** 
 
@@ -1028,14 +1029,14 @@ Aлиас для [quantileDeterministiс(0.5)(x)](#agg_function-quantiledetermin
 
 **Параметры** 
 
-- `x` — Число типов [data types](../../data_types/index.md#data_types), [Date](../../data_types/date.md#date) или [DateTime](../../data_types/datetime.md).
+- `x` — Число. Выражение, возращающее значение [числового типа](../../data_types/index.md#data_types), [Date](../../data_types/date.md#date) или [DateTime](../../data_types/datetime.md).
 - `determinator` — Число, хэш которого используется вместо генератора случайных чисел в алгоритме резервуарной выборки, чтобы сделать результат детерминированным. В качестве детерминатора можно использовать любое детерминированное положительное число, например идентификатор пользователя или идентификатор события. Если одно и то же значение детерминатора встречается слишком часто, функция работает некорректно.
 
 
 **Возвращаемое значение**
 
-- Среднее значение отсортированной пересчитанной последовательности, если она содержит нечетное число чисел.
-- Среднее арифметическое двух средних значений отсортированной пересчитанной последовательности, если она содержит четное число чисел. Функция не округляет результат.
+- Центральное значение отсортированной пересчитанной последовательности, если она содержит нечетное количество чисел.
+- Среднее арифметическое двух центральных значений отсортированной пересчитанной последовательности, если она содержит четное количество чисел. Функция не округляет результат.
 
 Тип: Тип данных соответствует типу входных данных.
 
@@ -1073,7 +1074,7 @@ SELECT medianDeterministic(val, 1) FROM t
 
 ##  medianExact {#medianexact}
 
-Вычисляет точную [медиану](https://en.wikipedia.org/wiki/Median) числовой последовательности данных.  
+Вычисляет точную [медиану](https://en.wikipedia.org/wiki/Median) числовой последовательности.  
 
 Алгоритм функции использует частично отсортированные массивы и потребляет память `O(n)`, где `n` — число значений.
 
@@ -1088,13 +1089,14 @@ medianExact(x)
 
 **Параметры** 
 
-- `x` — Число типов [data types](../../data_types/index.md#data_types), [Date](../../data_types/date.md#date) или [DateTime](../../data_types/datetime.md).
+- `x` — Число. Выражение, возращающее значение [числового типа](../../data_types/index.md#data_types), [Date](../../data_types/date.md#date) или [DateTime](../../data_types/datetime.md).
 
 
 **Возвращаемое значение**
 
 - Среднее значение отсортированной последовательности, если она содержит нечетное число чисел.
-- Среднее арифметическое двух средних значений отсортированной пересчитанной последовательности, если она содержит четное число чисел. Функция не округляет результат.
+- Среднее арифметическое двух центральных значений отсортированной пересчитанной последовательности, если она содержит четное количество чисел. Функция не округляет результат.
+
 
 Тип: Тип данных соответствует типу входных данных.
 
@@ -1121,7 +1123,7 @@ SELECT medianExact(number) FROM numbers(10)
 
 ## medianExactWeighted {#medianexactweighted}
 
-Вычисляет точную [медиану](https://en.wikipedia.org/wiki/Median) числовой последовательности данных в соответствии с весом каждого элемента последовательности. 
+Вычисляет точную [медиану](https://en.wikipedia.org/wiki/Median) числовой последовательности в соответствии с весом каждого элемента последовательности. 
 
 Функция работает эффективнее, чем [medianExact](#medianexact), поскольку в алгоритме использует хэш-таблицу.
 
@@ -1136,7 +1138,7 @@ medianExactWeighted(x, weight)
 
 **Параметры** 
 
-- `x` — Число типов [data types](../../data_types/index.md#data_types), [Date](../../data_types/date.md#date) или [DateTime](../../data_types/datetime.md).
+- `x` — Число. Выражение, возращающее значение [числового типа](../../data_types/index.md#data_types), [Date](../../data_types/date.md#date) или [DateTime](../../data_types/datetime.md).
 - `weight` — Число повторений значения `x`.
 
 
@@ -1182,7 +1184,7 @@ SELECT medianExactWeighted(n, val) FROM t
 
 ## medianTiming {#mediantiming}
 
-С определенной точностью вычисляет [медиану](https://en.wikipedia.org/wiki/Median) числовой последовательности данных.
+С определенной точностью вычисляет [медиану](https://en.wikipedia.org/wiki/Median) числовой последовательности.
 
 Результат детерминирован. Функция оптимизирована для работы с последовательностями, описывающими такие распределения, как время загрузки веб-страниц или время отклика бэкенда.
 
@@ -1196,7 +1198,7 @@ medianTiming(x)
 
 **Параметры**
 
-- `x` — Число типов [data types](../../data_types/index.md#data_types), [Date](../../data_types/date.md#date) или [DateTime](../../data_types/datetime.md).
+- `x` — Число. Выражение, возращающее значение [числового типа](../../data_types/index.md#data_types), [Date](../../data_types/date.md#date) или [DateTime](../../data_types/datetime.md).
 
 **Возвращаемое значение**
 
@@ -1246,7 +1248,7 @@ SELECT medianTiming(response_time) FROM t
 
 ## medianTimingWeighted  {#medianTimingWeighted}
 
-С определенной точностью вычисляет [медиану](https://en.wikipedia.org/wiki/Median) числовой последовательности данных в соответствии с весом каждого элемента последовательности.
+С определенной точностью вычисляет [медиану](https://en.wikipedia.org/wiki/Median) числовой последовательности в соответствии с весом каждого элемента последовательности.
 
 Результат детерминирован. Функция оптимизирована для работы с последовательностями, описывающими такие распределения, как время загрузки веб-страниц или время отклика бэкенда.
 
@@ -1260,8 +1262,8 @@ medianExactWeighted(x, weight)
 
 **Параметры** 
 
-- `x` — Число типов [data types](../../data_types/index.md#data_types), [Date](../../data_types/date.md#date) или [DateTime](../../data_types/datetime.md).
-- `weight` — Число вхождений параметра `x`.
+- `x` — Число. Выражение, возращающее значение [числового типа](../../data_types/index.md#data_types), [Date](../../data_types/date.md#date) или [DateTime](../../data_types/datetime.md).
+- `weight` — Число повторений значения `x`.
  
 
 **Возвращаемое значение**
@@ -1307,7 +1309,7 @@ SELECT medianTimingWeighted(response_time, weight) FROM t
 
 ## medianTDigest {#medianTDigest}
 
-Вычисляет [медиану](https://en.wikipedia.org/wiki/Median) последовательности числовых данных с помощью алгоритма [T-digest](https://github.com/tdunning/t-digest/blob/master/docs/t-digest-paper/histo.pdf).
+Вычисляет [медиану](https://en.wikipedia.org/wiki/Median) числовой последовательности с помощью алгоритма [T-digest](https://github.com/tdunning/t-digest/blob/master/docs/t-digest-paper/histo.pdf).
 
 Вычисляемое значение зависит от порядка обработки запроса и результат не детерминирован. Максимальное отклонение составляет 1%. Потребление памяти — `log(n)`, где `n` — число значений.
 
@@ -1321,7 +1323,7 @@ medianTDigest(x)
 
 **Параметры** 
 
-- `x` — Число типов [data types](../../data_types/index.md#data_types), [Date](../../data_types/date.md#date) или [DateTime](../../data_types/datetime.md).
+- `x` — Число. Выражение, возращающее значение [числового типа](../../data_types/index.md#data_types), [Date](../../data_types/date.md#date) или [DateTime](../../data_types/datetime.md).
 
 **Возвращаемое значение**
 
@@ -1352,7 +1354,7 @@ SELECT medianTDigest(number) FROM numbers(10)
 
 ## medianTDigestWeighted {#medianTDigestWeighted}
 
-Вычисляет [медиану](https://en.wikipedia.org/wiki/Median) последовательности числовых данных с помощью алгоритма [T-digest](https://github.com/tdunning/t-digest/blob/master/docs/t-digest-paper/histo.pdf). Функция учитывает вес каждого элемента последовательности.
+Вычисляет [медиану](https://en.wikipedia.org/wiki/Median) числовой псследовательности с помощью алгоритма [T-digest](https://github.com/tdunning/t-digest/blob/master/docs/t-digest-paper/histo.pdf). Функция учитывает вес каждого элемента последовательности.
 
 Вычисляемое значение зависит от порядка обработки запроса и результат не детерминирован. Максимальное отклонение составляет 1%. Потребление памяти — `log(n)`, где `n` — число значений.
 
@@ -1366,8 +1368,8 @@ medianTDigestWeighted(x,weight)
 
 **Параметры**
 
-- `x` — Число типов [data types](../../data_types/index.md#data_types), [Date](../../data_types/date.md#date) и [DateTime](../../data_types/datetime.md).
-- `weight` — Число вхождений параметра `x`.
+- `x` — Число. Выражение, возращающее значение [числового типа](../../data_types/index.md#data_types), [Date](../../data_types/date.md#date) или [DateTime](../../data_types/datetime.md).
+- `weight` — Число повторений значения `x`.
 
 
 **Возвращаемое значение**
