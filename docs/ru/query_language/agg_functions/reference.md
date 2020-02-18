@@ -1352,7 +1352,7 @@ SELECT medianTDigest(number) FROM numbers(10)
 
 ## medianTDigestWeighted {#medianTDigestWeighted}
 
-Вычисляет [медиану](https://en.wikipedia.org/wiki/Median) последовательности числовых данных применяя алгоритм [T-digest](https://github.com/tdunning/t-digest/blob/master/docs/t-digest-paper/histo.pdf). Алгоритм функции учитывает вес каждого элемента последовательности.
+Вычисляет [медиану](https://en.wikipedia.org/wiki/Median) последовательности числовых данных с помощью алгоритма [T-digest](https://github.com/tdunning/t-digest/blob/master/docs/t-digest-paper/histo.pdf). Функция учитывает вес каждого элемента последовательности.
 
 Вычисляемое значение зависит от порядка обработки запроса и не детерминировано. Максимальное отклонение составляет 1%. Потребление памяти — `log(n)`, где `n` — число значений.
 
