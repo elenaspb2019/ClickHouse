@@ -1151,7 +1151,7 @@ Result:
 
 - [quantileExactWeighted](#quantileexactweighted)
 
-## medianTiming(x) {#mediantiming}
+## medianTiming {#mediantiming}
 
 With the determined precision computes the [median](https://en.wikipedia.org/wiki/Median) of a numeric data sequence.
 

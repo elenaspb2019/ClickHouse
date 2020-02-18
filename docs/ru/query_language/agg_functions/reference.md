@@ -1180,7 +1180,7 @@ SELECT medianExactWeighted(n, val) FROM t
 - [quantileExactWeighted](#quantileexactweighted)
 
 
-## medianTiming(x) {#mediantiming}
+## medianTiming {#mediantiming}
 
 С определенной точностью вычисляет [медиану](https://en.wikipedia.org/wiki/Median) числовой последовательности данных.
 
