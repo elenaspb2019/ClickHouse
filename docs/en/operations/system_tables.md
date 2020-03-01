@@ -145,23 +145,52 @@ Contains information about detached parts of [MergeTree](table_engines/mergetree
 
 Contains information about external dictionaries.
 
-Columns:
+Contains information about [external dictionaries](../query_language/dicts/external_dicts.md).
 
+Columns:
+- `database` (String) — Database name where the dictionary is located. Only for DDL dictionaries, for othears is always an empty string.
 - `name` (String) — Dictionary name.
-- `type` (String) — Dictionary type: Flat, Hashed, Cache.
+- `status` (Enum8) — Vocabulary status. Possible values:
+  - `NOT_LOADED` — Dictionary did not load because it was not used.
+  - `LOADED` — Dictionary loaded successfully.
+  - `FAILED` — Unable to load the dictionary as a result of an error.
+  - `LOADING` — Dictionary is loading now.
+  - `LOADED_AND_RELOADING` — Dictionary is loaded successfully, and is being reloaded right now (frequent resons: SYSTEM RELOADDICTIONARY request, timeout, dictionary config has changed).
+  - `FAILED_AND_RELOADING` - Could not load the dictionary as a result of an error and is loading now.
 - `origin` (String) — Path to the configuration file that describes the dictionary.
+- `type` (String) — Dictionary type: flat, hashed, cache.
+- `key` — Key type:
+  - `Numeric Key` (UInt64).
+  - `Сomposite key` (String) — form "(type 1, type 2, ..., type n)".
 - `attribute.names` (Array(String)) — Array of attribute names provided by the dictionary.
 - `attribute.types` (Array(String)) — Corresponding array of attribute types that are provided by the dictionary.
-- `has_hierarchy` (UInt8) — Whether the dictionary is hierarchical.
-- `bytes_allocated` (UInt64) — The amount of RAM the dictionary uses.
+- `bytes_allocated` (UInt64) — Amount of RAM the dictionary uses.
+- `query_count` (UInt64) — Number of requests since the dictionary was loaded or since the last successful reboot.
 - `hit_rate` (Float64) — For cache dictionaries, the percentage of uses for which the value was in the cache.
-- `element_count` (UInt64) — The number of items stored in the dictionary.
-- `load_factor` (Float64) — The percentage filled in the dictionary (for a hashed dictionary, the percentage filled in the hash table).
-- `creation_time` (DateTime) — The time when the dictionary was created or last successfully reloaded.
-- `last_exception` (String) — Text of the error that occurs when creating or reloading the dictionary if the dictionary couldn't be created.
+- `element_count` (UInt64) — Number of items stored in the dictionary.
+- `load_factor` (Float64) — Percentage filled in the dictionary (for a hashed dictionary, the percentage filled in the hash table).
 - `source` (String) — Text describing the data source for the dictionary.
+- `lifetime_min` (UInt64) — Minimum lifetime of the dictionary in memory, after which Clickhouse tries to reload the dictionary (if `invalidate_query` is set, then only if it has changed). Set in seconds.
+- `lifetime_max` (UInt64) — Maximum lifetime of the dictionary in memory, after which Clickhouse tries to reload the dictionary (if `invalidate_query` is set, then only if it has changed). Set in seconds.
+- `loading_start_time` (DateTime) — Start time for loading the dictionary.
+- `loading_duration` (Float32) — Time taken to load the dictionary.
+- `last_exception` (String) — Text of the error that occurs when creating or reloading the dictionary if the dictionary couldn't be created.
 
-Note that the amount of memory used by the dictionary is not proportional to the number of items stored in it. So for flat and cached dictionaries, all the memory cells are pre-assigned, regardless of how full the dictionary actually is.
+Clickhouse takes a random number from the interval [lifetime_min, lifetime_max]. If lifetime_min=0 and lifetime_max=0, Clickhouse does not reload the dictionary by timeout. In this case, the Clickhouse can reload the dictionary earlier if the dictionary configuration file was changed or the SYSTEM RELOAD DICTIONARY command was executed.
+
+The amount of memory used by the dictionary is not proportional to the number of items stored in it. So for flat and cached dictionaries, all the memory cells are pre-assigned, regardless of how full the dictionary actually is.ote that the amount of memory used by the dictionary is not proportional to the number of items stored in it. So for flat and cached dictionaries, all the memory cells are pre-assigned, regardless of how full the dictionary actually is.
+
+**Example**
+
+```sql
+SELECT * FROM system.dictionaries
+```
+
+```text
+┌─database─┬─name─┬─status─────┬─origin──────┬─type─┬─key─┬─attribute.names─┬─attribute.types─┬─bytes_allocated─┬─query_count─┬─hit_rate─┬─element_count─┬─load_factor─┬─source─┬─lifetime_min─┬─lifetime_max─┬──loading_start_time─┬─loading_duration─┬─last_exception─┐
+│ dictdb   │ dict │ NOT_LOADED │ dictdb.dict │      │     │ []              │ []              │               0 │           0 │        0 │             0 │           0 │        │            0 │            0 │ 0000-00-00 00:00:00 │                0 │                │
+└──────────┴──────┴────────────┴─────────────┴──────┴─────┴─────────────────┴─────────────────┴─────────────────┴─────────────┴──────────┴───────────────┴─────────────┴────────┴──────────────┴──────────────┴─────────────────────┴──────────────────┴────────────────┘
+```
 
 ## system.events {#system_tables-events}
 
