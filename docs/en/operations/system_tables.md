@@ -143,11 +143,10 @@ Contains information about detached parts of [MergeTree](table_engines/mergetree
 
 ## system.dictionaries
 
-Contains information about external dictionaries.
-
 Contains information about [external dictionaries](../query_language/dicts/external_dicts.md).
 
 Columns:
+
 - `database` (String) — Database name where the dictionary is located. Only for DDL dictionaries, for othears is always an empty string.
 - `name` (String) — Dictionary name.
 - `status` (Enum8) — Vocabulary status. Possible values:
@@ -159,9 +158,7 @@ Columns:
   - `FAILED_AND_RELOADING` - Could not load the dictionary as a result of an error and is loading now.
 - `origin` (String) — Path to the configuration file that describes the dictionary.
 - `type` (String) — Dictionary type: flat, hashed, cache.
-- `key` — Key type:
-  - `Numeric Key` (UInt64).
-  - `Сomposite key` (String) — form "(type 1, type 2, ..., type n)".
+- `key` — Key type: Numeric Key (UInt64) or Сomposite key (String) — form "(type 1, type 2, ..., type n)".
 - `attribute.names` (Array(String)) — Array of attribute names provided by the dictionary.
 - `attribute.types` (Array(String)) — Corresponding array of attribute types that are provided by the dictionary.
 - `bytes_allocated` (UInt64) — Amount of RAM the dictionary uses.
