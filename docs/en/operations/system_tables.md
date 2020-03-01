@@ -147,14 +147,14 @@ Contains information about [external dictionaries](../query_language/dicts/exter
 
 Columns:
 
-- `database` (String) — Database name where the dictionary is located. Only for DDL dictionaries, for othears is always an empty string.
+- `database` (String) — Database name where the dictionary is located. Only for DDL dictionaries, for others is always an empty string.
 - `name` (String) — Dictionary name.
 - `status` (Enum8) — Vocabulary status. Possible values: 
      - `NOT_LOADED` — Dictionary did not load because it was not used.
      - `LOADED` — Dictionary loaded successfully.
      - `FAILED` — Unable to load the dictionary as a result of an error.
      - `LOADING` — Dictionary is loading now.
-     - `LOADED_AND_RELOADING` — Dictionary is loaded successfully, and is being reloaded right now (frequent resons: SYSTEM RELOADDICTIONARY request, timeout, dictionary config has changed).
+     - `LOADED_AND_RELOADING` — Dictionary is loaded successfully, and is being reloaded right now (frequent reasons: SYSTEM RELOADDICTIONARY request, timeout, dictionary config has changed).
      - `FAILED_AND_RELOADING` - Could not load the dictionary as a result of an error and is loading now.
 - `origin` (String) — Path to the configuration file that describes the dictionary.
 - `type` (String) — Dictionary type: flat, hashed, cache.
