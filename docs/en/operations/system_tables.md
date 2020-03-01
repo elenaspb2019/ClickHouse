@@ -150,12 +150,12 @@ Columns:
 - `database` (String) — Database name where the dictionary is located. Only for DDL dictionaries, for othears is always an empty string.
 - `name` (String) — Dictionary name.
 - `status` (Enum8) — Vocabulary status. Possible values:
-  - `NOT_LOADED` — Dictionary did not load because it was not used.
-  - `LOADED` — Dictionary loaded successfully.
-  - `FAILED` — Unable to load the dictionary as a result of an error.
-  - `LOADING` — Dictionary is loading now.
-  - `LOADED_AND_RELOADING` — Dictionary is loaded successfully, and is being reloaded right now (frequent resons: SYSTEM RELOADDICTIONARY request, timeout, dictionary config has changed).
-  - `FAILED_AND_RELOADING` - Could not load the dictionary as a result of an error and is loading now.
+   - `NOT_LOADED` — Dictionary did not load because it was not used.
+   - `LOADED` — Dictionary loaded successfully.
+   - `FAILED` — Unable to load the dictionary as a result of an error.
+   - `LOADING` — Dictionary is loading now.
+   - `LOADED_AND_RELOADING` — Dictionary is loaded successfully, and is being reloaded right now (frequent resons: SYSTEM RELOADDICTIONARY request, timeout, dictionary config has changed).
+   - `FAILED_AND_RELOADING` - Could not load the dictionary as a result of an error and is loading now.
 - `origin` (String) — Path to the configuration file that describes the dictionary.
 - `type` (String) — Dictionary type: flat, hashed, cache.
 - `key` — Key type: Numeric Key (UInt64) or Сomposite key (String) — form "(type 1, type 2, ..., type n)".
@@ -173,9 +173,9 @@ Columns:
 - `loading_duration` (Float32) — Time taken to load the dictionary.
 - `last_exception` (String) — Text of the error that occurs when creating or reloading the dictionary if the dictionary couldn't be created.
 
-Clickhouse takes a random number from the interval [lifetime_min, lifetime_max]. If lifetime_min=0 and lifetime_max=0, Clickhouse does not reload the dictionary by timeout. In this case, the Clickhouse can reload the dictionary earlier if the dictionary configuration file was changed or the SYSTEM RELOAD DICTIONARY command was executed.
+Clickhouse takes a random number from the interval `[lifetime_min, lifetime_max]`. If lifetime_min=0 and lifetime_max=0, Clickhouse does not reload the dictionary by timeout. In this case, the Clickhouse can reload the dictionary earlier if the dictionary configuration file was changed or the SYSTEM RELOAD DICTIONARY command was executed.
 
-The amount of memory used by the dictionary is not proportional to the number of items stored in it. So for flat and cached dictionaries, all the memory cells are pre-assigned, regardless of how full the dictionary actually is.ote that the amount of memory used by the dictionary is not proportional to the number of items stored in it. So for flat and cached dictionaries, all the memory cells are pre-assigned, regardless of how full the dictionary actually is.
+The amount of memory used by the dictionary is not proportional to the number of items stored in it. For flat and cached dictionaries, all the memory cells are pre-assigned, regardless of how full the dictionary actually is.
 
 **Example**
 
