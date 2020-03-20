@@ -161,7 +161,7 @@ Columns:
 - `key` — Key type: Numeric Key (UInt64) or Сomposite key (String) — form "(type 1, type 2, ..., type n)".
 - `attribute.names` (Array(String)) — Array of attribute names provided by the dictionary.
 - `attribute.types` (Array(String)) — Corresponding array of attribute types that are provided by the dictionary.
-- `bytes_allocated` (UInt64) — Amount of RAM the dictionary uses.
+- `bytes_allocated` (UInt64) — Amount of RAM allocated for the dictionary.
 - `query_count` (UInt64) — Number of requests since the dictionary was loaded or since the last successful reboot.
 - `hit_rate` (Float64) — For cache dictionaries, the percentage of uses for which the value was in the cache.
 - `element_count` (UInt64) — Number of items stored in the dictionary.
