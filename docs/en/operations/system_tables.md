@@ -148,7 +148,7 @@ Contains information about [external dictionaries](../query_language/dicts/exter
 Columns:
 
 - `database` (String) — Database name where the dictionary is located. Only for DDL dictionaries, for others is always an empty string.
-- `name` (String) — Dictionary name.
+- `name` (String) — [Dictionary name](../query_language/dicts/external_dicts_dict.md).
 - `status` (Enum8) — Vocabulary status. Possible values: 
      - `NOT_LOADED` — Dictionary did not load because it was not used.
      - `LOADED` — Dictionary loaded successfully.
@@ -157,36 +157,51 @@ Columns:
      - `LOADED_AND_RELOADING` — Dictionary is loaded successfully, and is being reloaded right now (frequent reasons: SYSTEM RELOADDICTIONARY request, timeout, dictionary config has changed).
      - `FAILED_AND_RELOADING` - Could not load the dictionary as a result of an error and is loading now.
 - `origin` (String) — Path to the configuration file that describes the dictionary.
-- `type` (String) — Dictionary type: flat, hashed, cache.
-- `key` — Key type: Numeric Key (UInt64) or Сomposite key (String) — form "(type 1, type 2, ..., type n)".
-- `attribute.names` (Array(String)) — Array of attribute names provided by the dictionary.
-- `attribute.types` (Array(String)) — Corresponding array of attribute types that are provided by the dictionary.
+- `type` (String) — Dictionary type: [flat](../query_language/dicts/external_dicts_dict_layout/#flat.md), [hashed](../query_language/dicts/external_dicts_dict_layout/#hashed.md), [cache](../query_language/dicts/external_dicts_dict_layout/#cache.md).
+- `key` — [Key type](../query_language/dicts/external_dicts_dict_structure/#ext_dict_structure-key.md): Numeric Key (UInt64) or Сomposite key (String) — form "(type 1, type 2, ..., type n)".
+- `attribute.names` (Array(String)) — Array of [attribute names](../query_language/dicts/external_dicts_dict_structure/#ext_dict_structure-attributes.md) provided by the dictionary.
+- `attribute.types` (Array(String)) — Corresponding array of [attribute types](../query_language/dicts/external_dicts_dict_structure/#ext_dict_structure-attributes.md) that are provided by the dictionary.
 - `bytes_allocated` (UInt64) — Amount of RAM allocated for the dictionary.
 - `query_count` (UInt64) — Number of requests since the dictionary was loaded or since the last successful reboot.
 - `hit_rate` (Float64) — For cache dictionaries, the percentage of uses for which the value was in the cache.
 - `element_count` (UInt64) — Number of items stored in the dictionary.
 - `load_factor` (Float64) — Percentage filled in the dictionary (for a hashed dictionary, the percentage filled in the hash table).
-- `source` (String) — Text describing the data source for the dictionary.
-- `lifetime_min` (UInt64) — Minimum lifetime of the dictionary in memory, after which Clickhouse tries to reload the dictionary (if `invalidate_query` is set, then only if it has changed). Set in seconds.
-- `lifetime_max` (UInt64) — Maximum lifetime of the dictionary in memory, after which Clickhouse tries to reload the dictionary (if `invalidate_query` is set, then only if it has changed). Set in seconds.
+- `source` (String) — Text describing the [data source](../query_language/dicts/external_dicts_dict_sources.md) for the dictionary.
+- `lifetime_min` (UInt64) — Minimum [lifetime](../query_language/dicts/external_dicts_dict_lifetime.md) of the dictionary in memory, after which ClickHouse tries to reload the dictionary (if `invalidate_query` is set, then only if it has changed). Set in seconds.
+- `lifetime_max` (UInt64) — Maximum [lifetime](../query_language/dicts/external_dicts_dict_lifetime.md) of the dictionary in memory, after which ClickHouse tries to reload the dictionary (if `invalidate_query` is set, then only if it has changed). Set in seconds.
 - `loading_start_time` (DateTime) — Start time for loading the dictionary.
+- `last_successful_update_time` (DateTime) — End time for loading or updating the dictionary. Helps to monitor some troubles with external sources and investigate causes.
 - `loading_duration` (Float32) — Time taken to load the dictionary.
 - `last_exception` (String) — Text of the error that occurs when creating or reloading the dictionary if the dictionary couldn't be created.
 
-Clickhouse takes a random number from the interval `[lifetime_min, lifetime_max]`. If lifetime_min=0 and lifetime_max=0, Clickhouse does not reload the dictionary by timeout. In this case, the Clickhouse can reload the dictionary earlier if the dictionary configuration file was changed or the SYSTEM RELOAD DICTIONARY command was executed.
-
-The amount of memory used by the dictionary is not proportional to the number of items stored in it. For flat and cached dictionaries, all the memory cells are pre-assigned, regardless of how full the dictionary actually is.
 
 **Example**
+
+Configure the dictionary.
+
+```sql
+CREATE DICTIONARY dictdb.dict
+(
+    `key` Int64 DEFAULT -1,
+    `value_default` String DEFAULT 'world',
+    `value_expression` String DEFAULT 'xxx' EXPRESSION 'toString(127 * 172)'
+)
+PRIMARY KEY key
+SOURCE(CLICKHOUSE(HOST 'localhost' PORT 9000 USER 'default' TABLE 'dicttbl' DB 'dictdb'))
+LIFETIME(MIN 0 MAX 1)
+LAYOUT(FLAT())
+```
+
+Make sure that the dictionary is loaded.
 
 ```sql
 SELECT * FROM system.dictionaries
 ```
 
 ```text
-┌─database─┬─name─┬─status─────┬─origin──────┬─type─┬─key─┬─attribute.names─┬─attribute.types─┬─bytes_allocated─┬─query_count─┬─hit_rate─┬─element_count─┬─load_factor─┬─source─┬─lifetime_min─┬─lifetime_max─┬──loading_start_time─┬─loading_duration─┬─last_exception─┐
-│ dictdb   │ dict │ NOT_LOADED │ dictdb.dict │      │     │ []              │ []              │               0 │           0 │        0 │             0 │           0 │        │            0 │            0 │ 0000-00-00 00:00:00 │                0 │                │
-└──────────┴──────┴────────────┴─────────────┴──────┴─────┴─────────────────┴─────────────────┴─────────────────┴─────────────┴──────────┴───────────────┴─────────────┴────────┴──────────────┴──────────────┴─────────────────────┴──────────────────┴────────────────┘
+┌─database─┬─name─┬─status─┬─origin──────┬─type─┬─key────┬─attribute.names──────────────────────┬─attribute.types─────┬─bytes_allocated─┬─query_count─┬─hit_rate─┬─element_count─┬───────────load_factor─┬─source─────────────────────┬─lifetime_min─┬─lifetime_max─┬──loading_start_time─┌──last_successful_update_time─┬──────loading_duration─┬─last_exception─┐
+│ dictdb   │ dict │ LOADED │ dictdb.dict │ Flat │ UInt64 │ ['value_default','value_expression'] │ ['String','String'] │           74032 │           0 │        1 │             1 │ 0.0004887585532746823 │ ClickHouse: dictdb.dicttbl │            0 │            1 │ 2020-03-04 04:17:34 │   2020-03-04 04:30:34        │                 0.002 │                │
+└──────────┴──────┴────────┴─────────────┴──────┴────────┴──────────────────────────────────────┴─────────────────────┴─────────────────┴─────────────┴──────────┴───────────────┴───────────────────────┴────────────────────────────┴──────────────┴──────────────┴─────────────────────┴──────────────────────────────┘───────────────────────┴────────────────┘
 ```
 
 ## system.events {#system_tables-events}
