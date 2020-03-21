@@ -139,7 +139,7 @@ This system table is used for implementing the `SHOW DATABASES` query.
 
 ## system.detached_parts {#system_tables-detached_parts}
 
-Contains information about detached parts of [MergeTree](table_engines/mergetree.md) tables. The `reason` column specifies why the part was detached. For user-detached parts, the reason is empty. Such parts can be attached with [ALTER TABLE ATTACH PARTITION|PART](../query_language/query_language/alter/#alter_attach-partition) command. For the description of other columns, see [system.parts](#system_tables-parts). If part name is invalid, values of some columns may be `NULL`. Such parts can be deleted with [ALTER TABLE DROP DETACHED PART](../query_language/query_language/alter/#alter_drop-detached).
+Contains information about detached parts of [MergeTree](table_engines/mergetree.md) tables. The `reason` column specifies why the part was detached. For user-detached parts, the reason is empty. Such parts can be attached with [ALTER TABLE ATTACH PARTITION|PART](../query_language/alter.md#alter_attach-partition) command. For the description of other columns, see [system.parts](#system_tables-parts). If part name is invalid, values of some columns may be `NULL`. Such parts can be deleted with [ALTER TABLE DROP DETACHED PART](../query_language/alter.md#alter_drop-detached).
 
 ## system.dictionaries
 
@@ -157,10 +157,10 @@ Columns:
      - `LOADED_AND_RELOADING` — Dictionary is loaded successfully, and is being reloaded right now (frequent reasons: SYSTEM RELOADDICTIONARY request, timeout, dictionary config has changed).
      - `FAILED_AND_RELOADING` - Could not load the dictionary as a result of an error and is loading now.
 - `origin` (String) — Path to the configuration file that describes the dictionary.
-- `type` (String) — Dictionary type: [flat](../query_language/dicts/external_dicts_dict_layout/#flat), [hashed](../query_language/dicts/external_dicts_dict_layout/#hashed), [cache](../query_language/dicts/external_dicts_dict_layout/#cache).
-- `key` — [Key type](../query_language/dicts/external_dicts_dict_structure/#ext_dict_structure-key): Numeric Key (UInt64) or Сomposite key (String) — form "(type 1, type 2, ..., type n)".
-- `attribute.names` (Array(String)) — Array of [attribute names](../query_language/dicts/external_dicts_dict_structure/#ext_dict_structure-attributes) provided by the dictionary.
-- `attribute.types` (Array(String)) — Corresponding array of [attribute types](../query_language/dicts/external_dicts_dict_structure/#ext_dict_structure-attributes) that are provided by the dictionary.
+- `type` (String) — Dictionary type: [flat](../query_language/dicts/external_dicts_dict_layout.md#flat), [hashed](../query_language/dicts/external_dicts_dict_layout.md#dicts-external_dicts_dict_layout-hashed), [cache](../query_language/dicts/external_dicts_dict_layout.md#cache).
+- `key` — [Key type](../query_language/dicts/external_dicts_dict_structure.md#ext_dict_structure-key): Numeric Key (UInt64) or Сomposite key (String) — form "(type 1, type 2, ..., type n)".
+- `attribute.names` (Array(String)) — Array of [attribute names](../query_language/dicts/external_dicts_dict_structure.md#ext_dict_structure-attributes) provided by the dictionary.
+- `attribute.types` (Array(String)) — Corresponding array of [attribute types](../query_language/dicts/external_dicts_dict_structure.md#ext_dict_structure-attributes) that are provided by the dictionary.
 - `bytes_allocated` (UInt64) — Amount of RAM allocated for the dictionary.
 - `query_count` (UInt64) — Number of requests since the dictionary was loaded or since the last successful reboot.
 - `hit_rate` (Float64) — For cache dictionaries, the percentage of uses for which the value was in the cache.
