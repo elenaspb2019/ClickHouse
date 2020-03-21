@@ -157,10 +157,10 @@ Columns:
      - `LOADED_AND_RELOADING` — Dictionary is loaded successfully, and is being reloaded right now (frequent reasons: SYSTEM RELOADDICTIONARY request, timeout, dictionary config has changed).
      - `FAILED_AND_RELOADING` - Could not load the dictionary as a result of an error and is loading now.
 - `origin` (String) — Path to the configuration file that describes the dictionary.
-- `type` (String) — Dictionary type: [flat](../query_language/dicts/external_dicts_dict_layout/#flat.md), [hashed](../query_language/dicts/external_dicts_dict_layout/#hashed.md), [cache](../query_language/dicts/external_dicts_dict_layout/#cache.md).
-- `key` — [Key type](../query_language/dicts/external_dicts_dict_structure/#ext_dict_structure-key.md): Numeric Key (UInt64) or Сomposite key (String) — form "(type 1, type 2, ..., type n)".
-- `attribute.names` (Array(String)) — Array of [attribute names](../query_language/dicts/external_dicts_dict_structure/#ext_dict_structure-attributes.md) provided by the dictionary.
-- `attribute.types` (Array(String)) — Corresponding array of [attribute types](../query_language/dicts/external_dicts_dict_structure/#ext_dict_structure-attributes.md) that are provided by the dictionary.
+- `type` (String) — Dictionary type: [flat](../query_language/dicts/external_dicts_dict_layout/#flat), [hashed](../query_language/dicts/external_dicts_dict_layout/#hashed), [cache](../query_language/dicts/external_dicts_dict_layout/#cache).
+- `key` — [Key type](../query_language/dicts/external_dicts_dict_structure/#ext_dict_structure-key): Numeric Key (UInt64) or Сomposite key (String) — form "(type 1, type 2, ..., type n)".
+- `attribute.names` (Array(String)) — Array of [attribute names](../query_language/dicts/external_dicts_dict_structure/#ext_dict_structure-attributes) provided by the dictionary.
+- `attribute.types` (Array(String)) — Corresponding array of [attribute types](../query_language/dicts/external_dicts_dict_structure/#ext_dict_structure-attributes) that are provided by the dictionary.
 - `bytes_allocated` (UInt64) — Amount of RAM allocated for the dictionary.
 - `query_count` (UInt64) — Number of requests since the dictionary was loaded or since the last successful reboot.
 - `hit_rate` (Float64) — For cache dictionaries, the percentage of uses for which the value was in the cache.
