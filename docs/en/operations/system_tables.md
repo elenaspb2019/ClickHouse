@@ -742,17 +742,22 @@ WHERE
 
 If this query doesn't return anything, it means that everything is fine.
 
-## system.settings
+## system.settings {#system-tables-system-settings}
 
-Contains information about settings that are currently in use.
-I.e. used for executing the query you are using to read from the system.settings table.
+Contains information about settings that are currently in use. 
 
 Columns:
 
 - `name` (String) — Setting name.
-- `value` (String)  — Setting value.
+- `value` (String) — Setting value.
 - `changed` (UInt8) — Whether the setting was explicitly defined in the config or explicitly changed.
-
+- `description` (String) — General information about the setting. 
+- `min` (String) — Minimum value of the setting. Also accepts `Null`. 
+- `max` (String) — Maximum value of the setting. Also accepts `Null`.
+- `readonly` (UInt8) — Setting can't be changed by the user:
+     - `0` — All queries are allowed.
+     - `1` — Only read requests.
+     - `2` — Only read requests, as well as changing settings, except for the `readonly` setting.
 
 Example:
 
@@ -763,13 +768,17 @@ WHERE changed
 ```
 
 ```text
-┌─name───────────────────┬─value───────┬─changed─┐
-│ max_threads            │ 8           │       1 │
-│ use_uncompressed_cache │ 0           │       1 │
-│ load_balancing         │ random      │       1 │
-│ max_memory_usage       │ 10000000000 │       1 │
-└────────────────────────┴─────────────┴─────────┘
+┌─name───────────────────┬─value───────┬─changed─┬─description──────────────────────────────────────────────────────────────────────────────────────────────────────────────┬─min──┬─max──┬─readonly─┐
+│ use_uncompressed_cache │ 0           │       1 │ Whether to use the cache of uncompressed blocks.                                                                         │ ᴺᵁᴸᴸ │ ᴺᵁᴸᴸ │        0 │
+│ load_balancing         │ random      │       1 │ Which replicas (among healthy replicas) to preferably send a query to (on the first attempt) for distributed processing. │ ᴺᵁᴸᴸ │ ᴺᵁᴸᴸ │        0 │
+│ max_memory_usage       │ 10000000000 │       1 │ Maximum memory usage for processing of single query. Zero means unlimited.                                               │ ᴺᵁᴸᴸ │ ᴺᵁᴸᴸ │        0 │
+└────────────────────────┴─────────────┴─────────┴──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┴──────┴──────┴──────────┘
 ```
+
+**See also**
+
+- [Permissions for Queries](settings/permissions_for_queries.md#settings_readonly) — Read more about readonly requests.
+- [Constraints on Settings](settings/settings_users.md) — Some of the settings with the SET query.
 
 ## system.table_engines
 
