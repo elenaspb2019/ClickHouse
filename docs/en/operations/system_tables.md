@@ -162,7 +162,7 @@ Columns:
 - `attribute.names` (Array(String)) — Array of [attribute names](../query_language/dicts/external_dicts_dict_structure.md#ext_dict_structure-attributes) provided by the dictionary.
 - `attribute.types` (Array(String)) — Corresponding array of [attribute types](../query_language/dicts/external_dicts_dict_structure.md#ext_dict_structure-attributes) that are provided by the dictionary.
 - `bytes_allocated` (UInt64) — Amount of RAM allocated for the dictionary.
-- `query_count` (UInt64) — Number of requests since the dictionary was loaded or since the last successful reboot.
+- `query_count` (UInt64) — Number of queries since the dictionary was loaded or since the last successful reboot.
 - `hit_rate` (Float64) — For cache dictionaries, the percentage of uses for which the value was in the cache.
 - `element_count` (UInt64) — Number of items stored in the dictionary.
 - `load_factor` (Float64) — Percentage filled in the dictionary (for a hashed dictionary, the percentage filled in the hash table).
