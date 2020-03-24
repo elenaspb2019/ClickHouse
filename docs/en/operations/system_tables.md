@@ -147,32 +147,32 @@ Contains information about [external dictionaries](../query_language/dicts/exter
 
 Columns:
 
-- `database` (String) — Database name where the dictionary is located. Only for DDL dictionaries, for others is always an empty string.
-- `name` (String) — [Dictionary name](../query_language/dicts/external_dicts_dict.md).
-- `status` (Enum8) — Dictionary status. Possible values: 
-     - `NOT_LOADED` — Dictionary did not load because it was not used.
+- `database` ([String](../data_types/string.md)) — Database name where the dictionary is located. Only for dictionaries created by DDL query, for others is always an empty string.
+- `name` ([String](../data_types/string.md)) — [Dictionary name](../query_language/dicts/external_dicts_dict.md).
+- `status` ([Enum8](../data_types/enum.md)) — Dictionary status. Possible values: 
+     - `NOT_LOADED` — Dictionary was not loaded because it was not used.
      - `LOADED` — Dictionary loaded successfully.
      - `FAILED` — Unable to load the dictionary as a result of an error.
      - `LOADING` — Dictionary is loading now.
-     - `LOADED_AND_RELOADING` — Dictionary is loaded successfully, and is being reloaded right now (frequent reasons: SYSTEM RELOADDICTIONARY request, timeout, dictionary config has changed).
+     - `LOADED_AND_RELOADING` — Dictionary is loaded successfully, and is being reloaded right now (frequent reasons: [SYSTEM RELOAD DICTIONARY](../query_language/system.md#query_language-system-reload-dictionary) query, timeout, dictionary config has changed).
      - `FAILED_AND_RELOADING` - Could not load the dictionary as a result of an error and is loading now.
-- `origin` (String) — Path to the configuration file that describes the dictionary.
-- `type` (String) — Type of a dictionary allocation. [Storing Dictionaries in Memory](../query_language/dicts/external_dicts_dict_layout.md)
-- `key` — [Key type](../query_language/dicts/external_dicts_dict_structure.md#ext_dict_structure-key): Numeric Key (UInt64) or Сomposite key (String) — form "(type 1, type 2, ..., type n)".
-- `attribute.names` (Array(String)) — Array of [attribute names](../query_language/dicts/external_dicts_dict_structure.md#ext_dict_structure-attributes) provided by the dictionary.
-- `attribute.types` (Array(String)) — Corresponding array of [attribute types](../query_language/dicts/external_dicts_dict_structure.md#ext_dict_structure-attributes) that are provided by the dictionary.
-- `bytes_allocated` (UInt64) — Amount of RAM allocated for the dictionary.
-- `query_count` (UInt64) — Number of queries since the dictionary was loaded or since the last successful reboot.
-- `hit_rate` (Float64) — For cache dictionaries, the percentage of uses for which the value was in the cache.
-- `element_count` (UInt64) — Number of items stored in the dictionary.
-- `load_factor` (Float64) — Percentage filled in the dictionary (for a hashed dictionary, the percentage filled in the hash table).
-- `source` (String) — Text describing the [data source](../query_language/dicts/external_dicts_dict_sources.md) for the dictionary.
-- `lifetime_min` (UInt64) — Minimum [lifetime](../query_language/dicts/external_dicts_dict_lifetime.md) of the dictionary in memory, after which ClickHouse tries to reload the dictionary (if `invalidate_query` is set, then only if it has changed). Set in seconds.
-- `lifetime_max` (UInt64) — Maximum [lifetime](../query_language/dicts/external_dicts_dict_lifetime.md) of the dictionary in memory, after which ClickHouse tries to reload the dictionary (if `invalidate_query` is set, then only if it has changed). Set in seconds.
-- `loading_start_time` (DateTime) — Start time for loading the dictionary.
-- `last_successful_update_time` (DateTime) — End time for loading or updating the dictionary. Helps to monitor some troubles with external sources and investigate causes.
-- `loading_duration` (Float32) — Duration of a dictionary loading.
-- `last_exception` (String) — Text of the error that occurs when creating or reloading the dictionary if the dictionary couldn't be created.
+- `origin` ([String](../data_types/string.md)) — Path to the configuration file that describes the dictionary.
+- `type` ([String](../data_types/string.md)) — Type of a dictionary allocation. [Storing Dictionaries in Memory](../query_language/dicts/external_dicts_dict_layout.md)
+- `key` — [Key type](../query_language/dicts/external_dicts_dict_structure.md#ext_dict_structure-key): Numeric Key ([UInt64](../data_types/int_uint.md#uint-ranges)) or Сomposite key ([String](../data_types/string.md)) — form "(type 1, type 2, ..., type n)".
+- `attribute.names` ([Array](../data_types/array.md)([String](../data_types/string.md))) — Array of [attribute names](../query_language/dicts/external_dicts_dict_structure.md#ext_dict_structure-attributes) provided by the dictionary.
+- `attribute.types`  ([Array](../data_types/array.md)([String](../data_types/string.md))) — Corresponding array of [attribute types](../query_language/dicts/external_dicts_dict_structure.md#ext_dict_structure-attributes) that are provided by the dictionary.
+- `bytes_allocated` ([UInt64](../data_types/int_uint.md#uint-ranges)) — Amount of RAM allocated for the dictionary.
+- `query_count` ([UInt64](../data_types/int_uint.md#uint-ranges)) — Number of queries since the dictionary was loaded or since the last successful reboot.
+- `hit_rate` ([Float64](../data_types/float.md)) — For cache dictionaries, the percentage of uses for which the value was in the cache.
+- `element_count` ([UInt64](../data_types/int_uint.md#uint-ranges)) — Number of items stored in the dictionary.
+- `load_factor` ([Float64](../data_types/float.md)) — Percentage filled in the dictionary (for a hashed dictionary, the percentage filled in the hash table).
+- `source` ([String](../data_types/string.md)) — Text describing the [data source](../query_language/dicts/external_dicts_dict_sources.md) for the dictionary.
+- `lifetime_min` ([UInt64](../data_types/int_uint.md#uint-ranges)) — Minimum [lifetime](../query_language/dicts/external_dicts_dict_lifetime.md) of the dictionary in memory, after which ClickHouse tries to reload the dictionary (if `invalidate_query` is set, then only if it has changed). Set in seconds.
+- `lifetime_max` ([UInt64](../data_types/int_uint.md#uint-ranges)) — Maximum [lifetime](../query_language/dicts/external_dicts_dict_lifetime.md) of the dictionary in memory, after which ClickHouse tries to reload the dictionary (if `invalidate_query` is set, then only if it has changed). Set in seconds.
+- `loading_start_time` ([DateTime](../data_types/datetime.md)) — Start time for loading the dictionary.
+- `last_successful_update_time` ([DateTime](../data_types/datetime.md)) — End time for loading or updating the dictionary. Helps to monitor some troubles with external sources and investigate causes.
+- `loading_duration` ([Float32](../data_types/float.md)) — Duration of a dictionary loading.
+- `last_exception` ([String](../data_types/string.md)) — Text of the error that occurs when creating or reloading the dictionary if the dictionary couldn't be created.
 
 
 **Example**
