@@ -149,7 +149,7 @@ Columns:
 
 - `database` (String) — Database name where the dictionary is located. Only for DDL dictionaries, for others is always an empty string.
 - `name` (String) — [Dictionary name](../query_language/dicts/external_dicts_dict.md).
-- `status` (Enum8) — Vocabulary status. Possible values: 
+- `status` (Enum8) — Dictionary status. Possible values: 
      - `NOT_LOADED` — Dictionary did not load because it was not used.
      - `LOADED` — Dictionary loaded successfully.
      - `FAILED` — Unable to load the dictionary as a result of an error.
