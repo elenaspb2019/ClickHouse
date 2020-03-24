@@ -171,7 +171,7 @@ Columns:
 - `lifetime_max` (UInt64) — Maximum [lifetime](../query_language/dicts/external_dicts_dict_lifetime.md) of the dictionary in memory, after which ClickHouse tries to reload the dictionary (if `invalidate_query` is set, then only if it has changed). Set in seconds.
 - `loading_start_time` (DateTime) — Start time for loading the dictionary.
 - `last_successful_update_time` (DateTime) — End time for loading or updating the dictionary. Helps to monitor some troubles with external sources and investigate causes.
-- `loading_duration` (Float32) — Time taken to load the dictionary.
+- `loading_duration` (Float32) — Duration of a dictionary loading.
 - `last_exception` (String) — Text of the error that occurs when creating or reloading the dictionary if the dictionary couldn't be created.
 
 
