@@ -759,7 +759,7 @@ Columns:
      - `1` — Only read requests.
      - `2` — Only read requests, as well as changing settings, except for the `readonly` setting.
 
-Example:
+**Example**
 
 ```sql
 SELECT *
