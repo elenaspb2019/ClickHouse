@@ -744,20 +744,20 @@ If this query doesn't return anything, it means that everything is fine.
 
 ## system.settings {#system-tables-system-settings}
 
-Contains information about settings that are currently in use. 
+Contains information about server configuration parameters.  
 
 Columns:
 
-- `name` (String) — Setting name.
-- `value` (String) — Setting value.
-- `changed` (UInt8) — Whether the setting was explicitly defined in the config or explicitly changed.
-- `description` (String) — General information about the setting. 
-- `min` (String) — Minimum value of the setting. Also accepts `Null`. 
-- `max` (String) — Maximum value of the setting. Also accepts `Null`.
-- `readonly` (UInt8) — Setting can't be changed by the user:
-     - `0` — All queries are allowed.
-     - `1` — Only read requests.
-     - `2` — Only read requests, as well as changing settings, except for the `readonly` setting.
+- `name` ([String](../data_types/string.md)) — Setting name.
+- `value` ([String](../data_types/string.md)) — Setting value.
+- `changed` ([UInt8](../data_types/int_uint.md#uint-ranges)) — Whether the setting was explicitly defined in the config or explicitly changed.
+- `description` ([String](../data_types/string.md)) — General information about the setting. 
+- `min` ([Nullable](../data_types/nullable.md)([String](../data_types/string.md))) — Minimum value of the setting. If the setting has no minimum value, contains [NULL](../query_language/syntax.md#null-literal). 
+- `max` ([Nullable](../data_types/nullable.md)([String](../data_types/string.md))) — Maximum value of the setting. If the setting has no maximum value, contains [NULL](../query_language/syntax.md#null-literal). 
+- `readonly` ([UInt8](../data_types/int_uint.md#uint-ranges)) — Shows whether the current user can change the setting:
+     - `0` — Current user can change the setting.
+     - `1` — Current user can not change the setting.
+
 
 **Example**
 
@@ -777,6 +777,7 @@ WHERE changed
 
 **See also**
 
+- [Settings](settings/index.md##settings) — Settings introduction.
 - [Permissions for Queries](settings/permissions_for_queries.md#settings_readonly) — Read more about readonly requests.
 - [Constraints on Settings](settings/settings_users.md) — Some of the settings with the SET query.
 
