@@ -750,7 +750,7 @@ Columns:
 
 - `name` ([String](../data_types/string.md)) — Setting name.
 - `value` ([String](../data_types/string.md)) — Setting value.
-- `changed` ([UInt8](../data_types/int_uint.md#uint-ranges)) — Whether the setting was explicitly defined in the config or explicitly changed.
+- `changed` ([UInt8](../data_types/int_uint.md#uint-ranges)) — Shows whether a setting is changed during the session.
 - `description` ([String](../data_types/string.md)) — General information about the setting. 
 - `min` ([Nullable](../data_types/nullable.md)([String](../data_types/string.md))) — Minimum value of the setting. If the setting has no minimum value, contains [NULL](../query_language/syntax.md#null-literal). 
 - `max` ([Nullable](../data_types/nullable.md)([String](../data_types/string.md))) — Maximum value of the setting. If the setting has no maximum value, contains [NULL](../query_language/syntax.md#null-literal). 
