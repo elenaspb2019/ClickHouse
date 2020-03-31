@@ -756,7 +756,7 @@ Columns:
 - `max` ([Nullable](../data_types/nullable.md)([String](../data_types/string.md))) — Maximum value of the setting. If the setting has no maximum value, contains [NULL](../query_language/syntax.md#null-literal). 
 - `readonly` ([UInt8](../data_types/int_uint.md#uint-ranges)) — Shows whether the current user can change the setting:
      - `0` — Current user can change the setting.
-     - `1` — Current user can not change the setting.
+     - `1` — Current user can't change the setting.
 
 
 **Example**
