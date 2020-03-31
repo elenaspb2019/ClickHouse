@@ -778,7 +778,7 @@ WHERE changed
 **See also**
 
 - [Settings](settings/index.md##settings)
-- [Permissions for Queries](settings/permissions_for_queries.md#settings_readonly) — Read more about readonly requests.
+- [Permissions for Queries](settings/permissions_for_queries.md#settings_readonly)
 - [Constraints on Settings](settings/settings_users.md) — Some of the settings with the SET query.
 
 ## system.table_engines
