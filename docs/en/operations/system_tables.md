@@ -762,17 +762,24 @@ Columns:
 **Example**
 
 ```sql
-SELECT *
+SELECT
+    name,
+    value,
+    changed,
+    description,
+    min,
+    max,
+    readonly
 FROM system.settings
-WHERE changed
+WHERE name LIKE '%min_i%'
 ```
 
 ```text
-┌─name───────────────────┬─value───────┬─changed─┬─description──────────────────────────────────────────────────────────────────────────────────────────────────────────────┬─min──┬─max──┬─readonly─┐
-│ use_uncompressed_cache │ 0           │       1 │ Whether to use the cache of uncompressed blocks.                                                                         │ ᴺᵁᴸᴸ │ ᴺᵁᴸᴸ │        0 │
-│ load_balancing         │ random      │       1 │ Which replicas (among healthy replicas) to preferably send a query to (on the first attempt) for distributed processing. │ ᴺᵁᴸᴸ │ ᴺᵁᴸᴸ │        0 │
-│ max_memory_usage       │ 10000000000 │       1 │ Maximum memory usage for processing of single query. Zero means unlimited.                                               │ ᴺᵁᴸᴸ │ ᴺᵁᴸᴸ │        0 │
-└────────────────────────┴─────────────┴─────────┴──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┴──────┴──────┴──────────┘
+┌─name────────────────────────────────────────┬─value─────┬─changed─┬─description───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┬─min──┬─max──┬─readonly─┐
+│ min_insert_block_size_rows                  │ 1048576   │       0 │ Squash blocks passed to INSERT query to specified size in rows, if blocks are not big enough.                                                                         │ ᴺᵁᴸᴸ │ ᴺᵁᴸᴸ │        0 │
+│ min_insert_block_size_bytes                 │ 268435456 │       0 │ Squash blocks passed to INSERT query to specified size in bytes, if blocks are not big enough.                                                                        │ ᴺᵁᴸᴸ │ ᴺᵁᴸᴸ │        0 │
+│ read_backoff_min_interval_between_events_ms │ 1000      │       0 │ Settings to reduce the number of threads in case of slow reads. Do not pay attention to the event, if the previous one has passed less than a certain amount of time. │ ᴺᵁᴸᴸ │ ᴺᵁᴸᴸ │        0 │
+└─────────────────────────────────────────────┴───────────┴─────────┴───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┴──────┴──────┴──────────┘
 ```
 
 **See also**
