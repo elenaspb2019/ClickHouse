@@ -784,7 +784,7 @@ WHERE name LIKE '%min_i%'
 
 **See also**
 
-- [Settings](settings/index.md##settings)
+- [Settings](settings/index.md#settings)
 - [Permissions for Queries](settings/permissions_for_queries.md#settings_readonly)
 - [Constraints on Settings](settings/settings_users.md)
 
