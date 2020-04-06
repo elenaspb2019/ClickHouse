@@ -132,52 +132,65 @@ SELECT * FROM system.contributors WHERE name='Olga Khvostikova'
 Такие куски могут быть присоединены с помощью [ALTER TABLE ATTACH PARTITION|PART](../query_language/query_language/alter/#alter_attach-partition). Остальные столбцы описаны в [system.parts](#system_tables-parts).
 Если имя куска некорректно, значения некоторых столбцов могут быть `NULL`. Такие куски могут быть удалены с помощью [ALTER TABLE DROP DETACHED PART](../query_language/query_language/alter/#alter_drop-detached).
 
-## system.dictionaries
+## system.dictionaries {#system_tables-dictionaries}
 
 Содержит информацию о [внешних словарях](../query_language/dicts/external_dicts.md).
 
 Столбцы:
 
-- `database` (String) — Имя базы данных, в которой находится словарь. Применимо для DDL-словарей, для остальных словарей — пустая строка.
-- `name` (String) — Имя словаря.
-- `status` (Enum8) — Статус словаря. Возможные значения:
-  - `NOT_LOADED` — Словарь не загружен, потому что не использовался.
-  -`LOADED` — Словарь загружен успешно.
-  - `FAILED` — Словарь не загружен в результате ошибки.
-  - `LOADING` — Словарь в процессе загрузки.
-  - `LOADED_AND_RELOADING` — Словарь загружен успешно, сейчас перезагружается (частые причины: результат запроса SYSTEM RELOAD DICTIONARY, таймаут, изменение настроек словаря).
-  - `FAILED_AND_RELOADING` — Словарь не загружен в результате ошибки, сейчас перезагружается.
-- `origin` (String) — Путь к конфигурационному файлу, описывающему словарь.
-- `type` (String) — Типы словарей: flat, hashed, cache.
-- `key` — Тип ключа. Числовой ключ (UInt64) или Составной ключ (String) — строка вида "(тип 1, тип 2, ..., тип n)".
-- `attribute.names` (Array(String)) — Массив имен атрибутов, предоставляемых справочником.
-- `attribute.types` (Array(String)) — Соответствующий массив типов атрибутов, предоставляемых справочником.
-- `bytes_allocated` (UInt64) — Объем оперативной памяти, используемый словарем.
-- `query_count` (UInt64) — Kоличество запросов с момента загрузки словаря или с момента последней успешной перезагрузки.
-- `hit_rate` (Float64) — Для cache-словарей — процент закэшированных значений.
-- `element_count` (UInt64) — Количество элементов, хранящихся в словаре.
-- `load_factor` (Float64) — Процент заполнения словаря (для хэшированного словаря  — процент заполнения хэш-таблицы).
-- `source` (String) — Текст, описывающий источник данных для словаря.
-- `lifetime_min` (UInt64) — Минимальное время жизни словаря в памяти, по истечении которого Clickhouse попытается перезагрузить словарь (если задано `invalidate_query`, то только если он изменился). Задается в секундах. 
-- `lifetime_max` (UInt64) — Максимальное время жизни словаря в памяти, по истечении которого Clickhouse попытается перезагрузить словарь (если задано `invalidate_query`, то только если он изменился). Задается в секундах.
-- `loading_start_time`  (DateTime) — Время начала загрузки словаря.
-- `loading_duration` (Float32) — Время, затраченное на загрузку словаря.
-- `last_exception` (String) — Текст ошибки, возникающей при создании или перезагрузке словаря, если словарь не удалось создать.
-
-Clickhouse берет случайное число из интервала `[lifetime_min, lifetime_max]`. Если lifetime_min=0 и lifetime_max=0, то Clickhouse не перезагрузит словарь по таймауту. При этом Clickhouse может перезагрузить словарь раньше, если был изменен конфигурационный файл словаря или выполнена команда SYSTEM RELOAD DICTIONARY.
-
-Количество оперативной памяти, которое использует словарь, не пропорционально количеству элементов, хранящихся в словаре. К примеру, для словарей с типами flat и cached все ячейки памяти выделяются заранее, независимо от реальной заполненности словаря.
+- `database` ([String](../data_types/string.md)) — Имя базы данных, в которой находится словарь. Только для словарей, созданных с помощью DDL-запроса, для остальных — всегда пустая строка.
+- `name` ([String](../data_types/string.md)) — [Имя словаря](../query_language/dicts/external_dicts_dict.md).
+- `status` ([Enum8](../data_types/enum.md)) — Статус словаря. Возможные значения:
+     - `NOT_LOADED` — Словарь не загружен, потому что не использовался.
+     -`LOADED` — Словарь загружен успешно.
+     - `FAILED` — Словарь не загружен в результате ошибки.
+     - `LOADING` — Словарь в процессе загрузки.
+     - `LOADED_AND_RELOADING` — Словарь загружен успешно, сейчас перезагружается (частые причины: запрос [SYSTEM RELOAD DICTIONARY](../query_language/system.md#query_language-system-reload-dictionary), таймаут, изменение настроек словаря).
+     - `FAILED_AND_RELOADING` — Словарь не загружен в результате ошибки, сейчас перезагружается.
+- `origin` ([String](../data_types/string.md)) — Путь к конфигурационному файлу, описывающему словарь.
+- `type`  ([String](../data_types/string.md)) — Тип размещения словаря. [Хранение словарей в памяти](../query_language/dicts/external_dicts_dict_layout.md).
+- `key` — [Тип ключа](../query_language/dicts/external_dicts_dict_structure.md#ext_dict_structure-key): Числовой ключ ([UInt64](../data_types/int_uint.md#uint-ranges)) или Составной ключ ([String](../data_types/string.md)) — строка вида "(тип 1, тип 2, ..., тип n)".
+- `attribute.names` ([Array](../data_types/array.md)([String](../data_types/string.md))) — Массив [имен атрибутов](../query_language/dicts/external_dicts_dict_structure.md#ext_dict_structure-attributes), предоставляемых справочником.
+- `attribute.types` ([Array](../data_types/array.md)([String](../data_types/string.md))) — Соответствующий массив [типов атрибутов](../query_language/dicts/external_dicts_dict_structure.md#ext_dict_structure-attributes), предоставляемых справочником.
+- `bytes_allocated` ([UInt64](../data_types/int_uint.md#uint-ranges)) — Объем оперативной памяти, используемый словарем.
+- `query_count` ([UInt64](../data_types/int_uint.md#uint-ranges)) — Количество запросов с момента загрузки словаря или с момента последней успешной перезагрузки.
+- `hit_rate` ([Float64](../data_types/float.md)) — Для cache-словарей — процент закэшированных значений.
+- `element_count` ([UInt64](../data_types/int_uint.md#uint-ranges))  — Количество элементов, хранящихся в словаре.
+- `load_factor` ([Float64](../data_types/float.md)) — Процент заполнения словаря (для хэшированного словаря  — процент заполнения хэш-таблицы).
+- `source` ([String](../data_types/string.md)) — Текст, описывающий [источник данных](../query_language/dicts/external_dicts_dict_sources.md) для словаря.
+- `lifetime_min` ([UInt64](../data_types/int_uint.md#uint-ranges)) — Минимальное [время обновления](../query_language/dicts/external_dicts_dict_lifetime.md) словаря в памяти, по истечении которого Clickhouse попытается перезагрузить словарь (если задано `invalidate_query`, то только если он изменился). Задается в секундах. 
+- `lifetime_max` ([UInt64](../data_types/int_uint.md#uint-ranges)) — Максимальное [время обновления](../query_language/dicts/external_dicts_dict_lifetime.md) словаря в памяти, по истечении которого Clickhouse попытается перезагрузить словарь (если задано `invalidate_query`, то только если он изменился). Задается в секундах.
+- `loading_start_time` ([DateTime](../data_types/datetime.md)) — Время начала загрузки словаря.
+- `loading_duration` ([Float32](../data_types/float.md)) — Время, затраченное на загрузку словаря.
+- `last_exception` ([String](../data_types/string.md)) — Текст ошибки, возникающей при создании или перезагрузке словаря, если словарь не удалось создать.
 
 **Пример**
+
+Настройте словарь.
+
+```sql
+CREATE DICTIONARY dictdb.dict
+(
+    `key` Int64 DEFAULT -1,
+    `value_default` String DEFAULT 'world',
+    `value_expression` String DEFAULT 'xxx' EXPRESSION 'toString(127 * 172)'
+)
+PRIMARY KEY key
+SOURCE(CLICKHOUSE(HOST 'localhost' PORT 9000 USER 'default' TABLE 'dicttbl' DB 'dictdb'))
+LIFETIME(MIN 0 MAX 1)
+LAYOUT(FLAT())
+```
+
+Убедитесь, что словарь загружен.
 
 ```sql
 SELECT * FROM system.dictionaries
 ```
 
 ```text
-┌─database─┬─name─┬─status─────┬─origin──────┬─type─┬─key─┬─attribute.names─┬─attribute.types─┬─bytes_allocated─┬─query_count─┬─hit_rate─┬─element_count─┬─load_factor─┬─source─┬─lifetime_min─┬─lifetime_max─┬──loading_start_time─┬─loading_duration─┬─last_exception─┐
-│ dictdb   │ dict │ NOT_LOADED │ dictdb.dict │      │     │ []              │ []              │               0 │           0 │        0 │             0 │           0 │        │            0 │            0 │ 0000-00-00 00:00:00 │                0 │                │
-└──────────┴──────┴────────────┴─────────────┴──────┴─────┴─────────────────┴─────────────────┴─────────────────┴─────────────┴──────────┴───────────────┴─────────────┴────────┴──────────────┴──────────────┴─────────────────────┴──────────────────┴────────────────┘
+┌─database─┬─name─┬─status─┬─origin──────┬─type─┬─key────┬─attribute.names──────────────────────┬─attribute.types─────┬─bytes_allocated─┬─query_count─┬─hit_rate─┬─element_count─┬───────────load_factor─┬─source─────────────────────┬─lifetime_min─┬─lifetime_max─┬──loading_start_time─┌──last_successful_update_time─┬──────loading_duration─┬─last_exception─┐
+│ dictdb   │ dict │ LOADED │ dictdb.dict │ Flat │ UInt64 │ ['value_default','value_expression'] │ ['String','String'] │           74032 │           0 │        1 │             1 │ 0.0004887585532746823 │ ClickHouse: dictdb.dicttbl │            0 │            1 │ 2020-03-04 04:17:34 │   2020-03-04 04:30:34        │                 0.002 │                │
+└──────────┴──────┴────────┴─────────────┴──────┴────────┴──────────────────────────────────────┴─────────────────────┴─────────────────┴─────────────┴──────────┴───────────────┴───────────────────────┴────────────────────────────┴──────────────┴──────────────┴─────────────────────┴──────────────────────────────┘───────────────────────┴────────────────┘
 ```
 
 ## system.events {#system_tables-events}

@@ -141,7 +141,7 @@ This system table is used for implementing the `SHOW DATABASES` query.
 
 Contains information about detached parts of [MergeTree](table_engines/mergetree.md) tables. The `reason` column specifies why the part was detached. For user-detached parts, the reason is empty. Such parts can be attached with [ALTER TABLE ATTACH PARTITION|PART](../query_language/alter.md#alter_attach-partition) command. For the description of other columns, see [system.parts](#system_tables-parts). If part name is invalid, values of some columns may be `NULL`. Such parts can be deleted with [ALTER TABLE DROP DETACHED PART](../query_language/alter.md#alter_drop-detached).
 
-## system.dictionaries
+## system.dictionaries  {#system_tables-dictionaries}
 
 Contains information about [external dictionaries](../query_language/dicts/external_dicts.md).
 
@@ -155,9 +155,9 @@ Columns:
      - `FAILED` — Unable to load the dictionary as a result of an error.
      - `LOADING` — Dictionary is loading now.
      - `LOADED_AND_RELOADING` — Dictionary is loaded successfully, and is being reloaded right now (frequent reasons: [SYSTEM RELOAD DICTIONARY](../query_language/system.md#query_language-system-reload-dictionary) query, timeout, dictionary config has changed).
-     - `FAILED_AND_RELOADING` - Could not load the dictionary as a result of an error and is loading now.
+     - `FAILED_AND_RELOADING` — Could not load the dictionary as a result of an error and is loading now.
 - `origin` ([String](../data_types/string.md)) — Path to the configuration file that describes the dictionary.
-- `type` ([String](../data_types/string.md)) — Type of a dictionary allocation. [Storing Dictionaries in Memory](../query_language/dicts/external_dicts_dict_layout.md)
+- `type` ([String](../data_types/string.md)) — Type of a dictionary allocation. [Storing Dictionaries in Memory](../query_language/dicts/external_dicts_dict_layout.md).
 - `key` — [Key type](../query_language/dicts/external_dicts_dict_structure.md#ext_dict_structure-key): Numeric Key ([UInt64](../data_types/int_uint.md#uint-ranges)) or Сomposite key ([String](../data_types/string.md)) — form "(type 1, type 2, ..., type n)".
 - `attribute.names` ([Array](../data_types/array.md)([String](../data_types/string.md))) — Array of [attribute names](../query_language/dicts/external_dicts_dict_structure.md#ext_dict_structure-attributes) provided by the dictionary.
 - `attribute.types`  ([Array](../data_types/array.md)([String](../data_types/string.md))) — Corresponding array of [attribute types](../query_language/dicts/external_dicts_dict_structure.md#ext_dict_structure-attributes) that are provided by the dictionary.
