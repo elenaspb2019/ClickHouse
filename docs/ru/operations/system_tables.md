@@ -145,7 +145,7 @@ SELECT * FROM system.contributors WHERE name='Olga Khvostikova'
 - `name` ([String](../data_types/string.md)) — [Имя словаря](../query_language/dicts/external_dicts_dict.md).
 - `status` ([Enum8](../data_types/enum.md)) — Статус словаря. Возможные значения:
      - `NOT_LOADED` — Словарь не загружен, потому что не использовался.
-     -`LOADED` — Словарь загружен успешно.
+     - `LOADED` — Словарь загружен успешно.
      - `FAILED` — Словарь не загружен в результате ошибки.
      - `LOADING` — Словарь в процессе загрузки.
      - `LOADED_AND_RELOADING` — Словарь загружен успешно, сейчас перезагружается (частые причины: запрос [SYSTEM RELOAD DICTIONARY](../query_language/system.md#query_language-system-reload-dictionary), таймаут, изменение настроек словаря).
