@@ -1,12 +1,7 @@
 # Third-party libraries may have substandard code.
 
-if (CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
-    set (CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -w")
-    set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -w -std=c++1z")
-elseif (CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
-    set (CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -w")
-    set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -w -std=c++1z")
-endif ()
+set (CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -w")
+set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -w")
 
 set_property(DIRECTORY PROPERTY EXCLUDE_FROM_ALL 1)
 
@@ -32,6 +27,8 @@ if (USE_INTERNAL_DOUBLE_CONVERSION_LIBRARY)
     add_subdirectory (double-conversion-cmake)
 endif ()
 
+add_subdirectory (ryu-cmake)
+
 if (USE_INTERNAL_CITYHASH_LIBRARY)
     add_subdirectory (cityhash102)
 endif ()
@@ -52,7 +49,6 @@ if (USE_INTERNAL_BTRIE_LIBRARY)
 endif ()
 
 if (USE_INTERNAL_ZLIB_LIBRARY)
-    unset (BUILD_SHARED_LIBS CACHE)
     set (ZLIB_ENABLE_TESTS 0 CACHE INTERNAL "")
     set (SKIP_INSTALL_ALL 1 CACHE INTERNAL "")
     set (ZLIB_COMPAT 1 CACHE INTERNAL "") # also enables WITH_GZFILEOP
@@ -68,20 +64,20 @@ if (USE_INTERNAL_ZLIB_LIBRARY)
     add_subdirectory (${INTERNAL_ZLIB_NAME})
     # We should use same defines when including zlib.h as used when zlib compiled
     target_compile_definitions (zlib PUBLIC ZLIB_COMPAT WITH_GZFILEOP)
-    target_compile_definitions (zlibstatic PUBLIC ZLIB_COMPAT WITH_GZFILEOP)
+    if (TARGET zlibstatic)
+        target_compile_definitions (zlibstatic PUBLIC ZLIB_COMPAT WITH_GZFILEOP)
+    endif ()
     if (ARCH_AMD64 OR ARCH_AARCH64)
-       target_compile_definitions (zlib PUBLIC X86_64 UNALIGNED_OK)
-       target_compile_definitions (zlibstatic PUBLIC X86_64 UNALIGNED_OK)
+        target_compile_definitions (zlib PUBLIC X86_64 UNALIGNED_OK)
+        if (TARGET zlibstatic)
+            target_compile_definitions (zlibstatic PUBLIC X86_64 UNALIGNED_OK)
+        endif ()
     endif ()
 endif ()
 
-if (USE_INTERNAL_CCTZ_LIBRARY)
-    add_subdirectory (cctz-cmake)
-endif ()
+add_subdirectory (cctz-cmake)
 
-if (ENABLE_JEMALLOC AND USE_INTERNAL_JEMALLOC_LIBRARY)
-    add_subdirectory (jemalloc-cmake)
-endif ()
+add_subdirectory (jemalloc-cmake)
 
 if (USE_INTERNAL_CPUID_LIBRARY)
     add_subdirectory (libcpuid)
@@ -114,7 +110,7 @@ function(mysql_support)
     endif()
     if (USE_INTERNAL_ZLIB_LIBRARY)
         set(ZLIB_FOUND ON)
-        set(ZLIB_LIBRARY zlibstatic)
+        set(ZLIB_LIBRARY ${ZLIB_LIBRARIES})
         set(WITH_EXTERNAL_ZLIB ON)
     endif()
     add_subdirectory (mariadb-connector-c)
@@ -144,6 +140,17 @@ if (ENABLE_ICU AND USE_INTERNAL_ICU_LIBRARY)
     add_subdirectory (icu-cmake)
 endif ()
 
+if(USE_INTERNAL_SNAPPY_LIBRARY)
+    set(SNAPPY_BUILD_TESTS 0 CACHE INTERNAL "")
+
+    add_subdirectory(snappy)
+
+    set (SNAPPY_INCLUDE_DIR "${ClickHouse_SOURCE_DIR}/contrib/snappy")
+    if(SANITIZE STREQUAL "undefined")
+        target_compile_options(${SNAPPY_LIBRARY} PRIVATE -fno-sanitize=undefined)
+    endif()
+endif()
+
 if (USE_INTERNAL_PARQUET_LIBRARY)
 if (USE_INTERNAL_PARQUET_LIBRARY_NATIVE_CMAKE)
     # We dont use arrow's cmakefiles because they uses too many depends and download some libs in compile time
@@ -159,6 +166,8 @@ if (USE_INTERNAL_PARQUET_LIBRARY_NATIVE_CMAKE)
     set (ARROW_PARQUET ON CACHE INTERNAL "")
     set (ARROW_VERBOSE_THIRDPARTY_BUILD ON CACHE INTERNAL "")
     set (ARROW_BUILD_SHARED 1 CACHE INTERNAL "")
+    set (ARROW_BUILD_UTILITIES OFF CACHE INTERNAL "")
+    set (ARROW_BUILD_INTEGRATION OFF CACHE INTERNAL "")
     set (ARROW_BOOST_HEADER_ONLY ON CACHE INTERNAL "")
     set (Boost_FOUND 1 CACHE INTERNAL "")
     if (MAKE_STATIC_LIBRARIES)
@@ -185,20 +194,6 @@ if (USE_INTERNAL_PARQUET_LIBRARY_NATIVE_CMAKE)
     endif()
 
 else()
-    if(USE_INTERNAL_SNAPPY_LIBRARY)
-        set(SNAPPY_BUILD_TESTS 0 CACHE INTERNAL "")
-        if (NOT MAKE_STATIC_LIBRARIES)
-            set(BUILD_SHARED_LIBS 1) # TODO: set at root dir
-        endif()
-
-        add_subdirectory(snappy)
-
-        set (SNAPPY_INCLUDE_DIR "${ClickHouse_SOURCE_DIR}/contrib/snappy")
-        if(SANITIZE STREQUAL "undefined")
-            target_compile_options(${SNAPPY_LIBRARY} PRIVATE -fno-sanitize=undefined)
-        endif()
-    endif()
-
     add_subdirectory(arrow-cmake)
 
     # The library is large - avoid bloat.
@@ -206,6 +201,10 @@ else()
     target_compile_options (${THRIFT_LIBRARY} PRIVATE -g0)
     target_compile_options (${PARQUET_LIBRARY} PRIVATE -g0)
 endif()
+endif()
+
+if (USE_INTERNAL_AVRO_LIBRARY)
+    add_subdirectory(avro-cmake)
 endif()
 
 if (USE_INTERNAL_POCO_LIBRARY)
@@ -248,8 +247,10 @@ if (USE_EMBEDDED_COMPILER AND USE_INTERNAL_LLVM_LIBRARY)
     endif ()
     set (LLVM_ENABLE_EH 1 CACHE INTERNAL "")
     set (LLVM_ENABLE_RTTI 1 CACHE INTERNAL "")
+    set (LLVM_ENABLE_PIC 0 CACHE INTERNAL "")
     set (LLVM_TARGETS_TO_BUILD "X86;AArch64" CACHE STRING "")
     add_subdirectory (llvm/llvm)
+    target_include_directories(LLVMSupport SYSTEM BEFORE PRIVATE ${ZLIB_INCLUDE_DIR})
 endif ()
 
 if (USE_INTERNAL_LIBGSASL_LIBRARY)
@@ -297,7 +298,7 @@ if (USE_INTERNAL_AWS_S3_LIBRARY)
     # The library is large - avoid bloat.
     target_compile_options (aws_s3 PRIVATE -g0)
     target_compile_options (aws_s3_checksums PRIVATE -g0)
-    target_compile_options (libcurl PRIVATE -g0)
+    target_compile_options (curl PRIVATE -g0)
 endif ()
 
 if (USE_BASE64)
@@ -305,12 +306,13 @@ if (USE_BASE64)
 endif()
 
 if (USE_INTERNAL_HYPERSCAN_LIBRARY)
-    add_subdirectory (hyperscan)
-
     # The library is large - avoid bloat.
     if (USE_STATIC_LIBRARIES)
+        add_subdirectory (hyperscan)
         target_compile_options (hs PRIVATE -g0)
     else ()
+        set(BUILD_SHARED_LIBS 1 CACHE INTERNAL "")
+        add_subdirectory (hyperscan)
         target_compile_options (hs_shared PRIVATE -g0)
     endif ()
 endif()
@@ -326,3 +328,11 @@ endif()
 if (USE_FASTOPS)
     add_subdirectory (fastops-cmake)
 endif()
+
+add_subdirectory(grpc-cmake)
+
+add_subdirectory(replxx-cmake)
+add_subdirectory(FastMemcpy)
+add_subdirectory(widecharwidth)
+add_subdirectory(consistent-hashing)
+add_subdirectory(consistent-hashing-sumbur)
