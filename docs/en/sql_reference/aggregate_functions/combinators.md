@@ -51,11 +51,34 @@ Converts an aggregate function for tables into an aggregate function for arrays 
 
 ## -OrDefault {#agg-functions-combinator-ordefault}
 
-Fills the default value of the aggregate function’s return type if there is nothing to aggregate.
+This combinator replaces returned value with default one, if the aggregate function does not have values to calculate. Works with different aggregate functions.
+`-OrDefault` can be combined with other combinators.
+
+**Syntax** 
+
+``` sql
+<aggFunction>OrDefault(x)
+```
+
+**Parameters**
+
+- `x` - Parameter of the aggregate function. A type of the parameter also depends on the specific aggregate function.
+
+**Returned values** 
+ 
+Returns default value of the aggregate function’s return type if there is nothing to aggregate.
+
+Type depends on the specific aggregate function.
+
+**Example**
+
+Query:
 
 ``` sql
 SELECT avg(number), avgOrDefault(number) FROM numbers(0)
 ```
+
+Result:
 
 ``` text
 ┌─avg(number)─┬─avgOrDefault(number)─┐
@@ -63,21 +86,72 @@ SELECT avg(number), avgOrDefault(number) FROM numbers(0)
 └─────────────┴──────────────────────┘
 ```
 
-## -OrNull {#agg-functions-combinator-ornull}
+Also `-OrDefault` can be used with a few combinators. It is useful when the aggregate function does not accept the empty input.
 
-Fills `null` if there is nothing to aggregate. The return column will be nullable.
+Query:
 
 ``` sql
-SELECT avg(number), avgOrNull(number) FROM numbers(0)
+SELECT avgOrDefaultIf(x, x > 10)
+FROM
+(
+    SELECT toDecimal32(1.23, 2) AS x
+)
 ```
+
+Result:
 
 ``` text
-┌─avg(number)─┬─avgOrNull(number)─┐
-│         nan │              ᴺᵁᴸᴸ │
-└─────────────┴───────────────────┘
+┌─avgOrDefaultIf(x, greater(x, 10))─┐
+│                              0.00 │
+└───────────────────────────────────┘
 ```
 
--OrDefault and -OrNull can be combined with other combinators. It is useful when the aggregate function does not accept the empty input.
+**See also**
+
+- [Functions For Working With External Dictionaries](ext_dict_functions.md#ext_dict_functions-other) - `-OrDefault` also is used with functions for working withe external dictionaries.
+
+## -OrNull {#agg-functions-combinator-ornull}
+
+This combinator replaces returned value with nullable one, if the aggregate function does not have values to calculate. Works with different aggregate functions. 
+`-OrNull` can be combined with other combinators.
+
+**Syntax** 
+
+``` sql
+<aggFunction>OrNull(x)
+```
+
+**Parameters**
+
+- `x` - Parameter of the aggregate function. A type of the parameter also depends on the specific aggregate function.
+ 
+**Returned values** 
+
+Returns column with `Null` if there is nothing to aggregate. 
+
+Type: [Nullable](../data_types/nullable.md).
+
+**Example**
+
+Add `-orNull` to the end of aggregate function.
+
+Query:
+
+``` sql
+SELECT sumOrNull(number) FROM numbers(10) WHERE number > 10
+```
+
+Result:
+
+``` text
+┌─sumOrNull(number)─┐
+│              ᴺᵁᴸᴸ │
+└───────────────────┘
+```
+
+Also `-OrNull` can be used with a few combinators. It is useful when the aggregate function does not accept the empty input.
+
+Query:
 
 ``` sql
 SELECT avgOrNullIf(x, x > 10)
@@ -86,6 +160,8 @@ FROM
     SELECT toDecimal32(1.23, 2) AS x
 )
 ```
+
+Result:
 
 ``` text
 ┌─avgOrNullIf(x, greater(x, 10))─┐
