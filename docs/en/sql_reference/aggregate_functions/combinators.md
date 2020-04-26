@@ -62,7 +62,7 @@ This combinator replaces returned value with default one, if the aggregate funct
 
 **Parameters**
 
-- `x` - Parameter of the aggregate function. A type of the parameter also depends on the specific aggregate function.
+- `x` - Parameter of the aggregate function. A type of the parameter depends on the specific aggregate function.
 
 **Returned values** 
  
@@ -108,7 +108,7 @@ Result:
 
 **See also**
 
-- [Functions For Working With External Dictionaries](../functions/ext_dict_functions.md#ext_dict_functions-other) - `-OrDefault` also is used with functions for working withe external dictionaries.
+- [Functions For Working With External Dictionaries](../functions/ext_dict_functions.md#ext_dict_functions-other) - `-OrDefault` is used with functions for working with external dictionaries.
 
 ## -OrNull {#agg-functions-combinator-ornull}
 
@@ -123,7 +123,7 @@ This combinator replaces returned value with nullable one, if the aggregate func
 
 **Parameters**
 
-- `x` - Parameter of the aggregate function. A type of the parameter also depends on the specific aggregate function.
+- `x` - Parameter of the aggregate function. A type of the parameter depends on the specific aggregate function.
  
 **Returned values** 
 
