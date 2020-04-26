@@ -108,7 +108,7 @@ Result:
 
 **See also**
 
-- [Functions For Working With External Dictionaries](ext_dict_functions.md#ext_dict_functions-other) - `-OrDefault` also is used with functions for working withe external dictionaries.
+- [Functions For Working With External Dictionaries](../functions/ext_dict_functions.md#ext_dict_functions-other) - `-OrDefault` also is used with functions for working withe external dictionaries.
 
 ## -OrNull {#agg-functions-combinator-ornull}
 
