@@ -64,7 +64,7 @@ If an aggregate function doesn't have input values, with this combinator it retu
 
 **Parameters**
 
-- `x` - Parameter of the aggregate function. A type of the parameter depends on the specific aggregate function.
+- `x` — Aggregate function parameters.
 
 **Returned values** 
  
