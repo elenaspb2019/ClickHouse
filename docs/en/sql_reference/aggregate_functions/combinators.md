@@ -110,7 +110,7 @@ Result:
 
 **See also**
 
-- [Functions For Working With External Dictionaries](../functions/ext_dict_functions.md#ext_dict_functions-other) - `-OrDefault` is used with functions for working with external dictionaries.
+- [Functions For Working With External Dictionaries](../functions/ext_dict_functions.md#ext_dict_functions-other) — `-OrDefault` is used with functions for working with external dictionaries.
 
 ## -OrNull {#agg-functions-combinator-ornull}
 
