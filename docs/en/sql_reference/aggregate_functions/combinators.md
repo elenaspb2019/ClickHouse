@@ -51,7 +51,9 @@ Converts an aggregate function for tables into an aggregate function for arrays 
 
 ## -OrDefault {#agg-functions-combinator-ordefault}
 
-This combinator replaces returned value with default one, if the aggregate function does not have values to calculate. Works with different aggregate functions.
+Changes behavour of an aggregate function.
+
+If an aggregate function doesn't have input values, with this combinator it returns the default value for its return data type. Applies to the aggregate functions that can take empty input data.
 `-OrDefault` can be combined with other combinators.
 
 **Syntax** 
