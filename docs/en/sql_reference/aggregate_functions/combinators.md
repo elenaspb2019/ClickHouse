@@ -68,7 +68,7 @@ If an aggregate function doesn't have input values, with this combinator it retu
 
 **Returned values** 
  
-Returns default value of the aggregate function’s return type if there is nothing to aggregate.
+Returns the default value of an aggregate function’s return type if there is nothing to aggregate.
 
 Type depends on the specific aggregate function.
 
