@@ -70,7 +70,7 @@ If an aggregate function doesn't have input values, with this combinator it retu
  
 Returns the default value of an aggregate function’s return type if there is nothing to aggregate.
 
-Type depends on the specific aggregate function.
+Type depends on the aggregate function used.
 
 **Example**
 
