@@ -51,7 +51,7 @@ Converts an aggregate function for tables into an aggregate function for arrays 
 
 ## -OrDefault {#agg-functions-combinator-ordefault}
 
-Changes behavour of an aggregate function.
+Changes behaviour of an aggregate function.
 
 If an aggregate function doesn't have input values, with this combinator it returns the default value for its return data type. Applies to the aggregate functions that can take empty input data.
 `-OrDefault` can be combined with other combinators.
@@ -108,11 +108,10 @@ Result:
 └───────────────────────────────────┘
 ```
 
-**See also**
-
-- [Functions For Working With External Dictionaries](../functions/ext_dict_functions.md#ext_dict_functions-other) — `-OrDefault` is used with functions for working with external dictionaries.
 
 ## -OrNull {#agg-functions-combinator-ornull}
+
+Changes behaviour of an aggregate function.
 
 This combinator replaces returned value with nullable one, if the aggregate function does not have values to calculate. Works with different aggregate functions. 
 `-OrNull` can be combined with other combinators.
@@ -125,11 +124,11 @@ This combinator replaces returned value with nullable one, if the aggregate func
 
 **Parameters**
 
-- `x` - Parameter of the aggregate function. A type of the parameter depends on the specific aggregate function.
+- `x` — Aggregate function parameters.
  
 **Returned values** 
 
-Returns column with `Null` if there is nothing to aggregate. 
+Returns the `Null` value of an aggregate function’s return type if there is nothing to aggregate.
 
 Type: [Nullable](../data_types/nullable.md).
 
